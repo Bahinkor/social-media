@@ -2,7 +2,7 @@
   "name": "social-media",
   "version": "1.0.0",
   "description": "A social media project with expressJs framework and mongoDB database and ejs template engine.",
-  "main": "server.js",
+  "main": "src/server.js",
   "repository": "https://github.com/Bahinkor/social-media.git",
   "author": "github.com/bahinkor",
   "license": "MIT",
