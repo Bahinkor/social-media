@@ -6,9 +6,6 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
-// config
-dotenv.config();
-
 const app = express();
 
 // security policy middlewares
