@@ -7,14 +7,15 @@ const schema = new mongoose.Schema({
         required: true,
         unique: true,
         lowercase: true,
-        maxlength: 200,
+        maxLength: 200,
     },
     username: {
         type: String,
         required: true,
         unique: true,
         lowercase: true,
-        maxlength: 200,
+        minLength: 3,
+        maxLength: 200,
     },
     biography: {
         type: String,
@@ -23,7 +24,8 @@ const schema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        maxlength: 200,
+        minLength: 1,
+        maxLength: 200,
     },
     password: {
         type: String,
