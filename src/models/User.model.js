@@ -22,6 +22,7 @@ const schema = new mongoose.Schema({
     },
     name: {
         type: String,
+        required: true,
         maxlength: 200,
     },
     password: {
@@ -30,7 +31,7 @@ const schema = new mongoose.Schema({
     },
     profilePicture: {
         type: String,
-        required: true,
+        required: false,
     },
     role: {
         type: String,
