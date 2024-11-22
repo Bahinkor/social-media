@@ -1,10 +1,10 @@
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const authRoutes = require("./modules/auth/auth.routes");
 
 const app = express();
 
@@ -31,10 +31,12 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// routes
+// * routes
 app.get("/", (req, res) => {
     res.render("index");
 });
+
+app.use("/auth", authRoutes);
 
 // ! 404 error handler
 app.use((req, res, next) => {
