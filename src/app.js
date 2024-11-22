@@ -36,14 +36,14 @@ app.get("/", (req, res) => {
     res.render("index");
 });
 
-// 404 error handler
+// ! 404 error handler
 app.use((req, res, next) => {
     res.status(404).json({
         message: "this route is not found."
     });
 });
 
-// 500 error handler
+// ! 500 error handler
 app.use((err, req, res, next) => {
     res.status(500).json({
         message: err.message || "Something went wrong.",
