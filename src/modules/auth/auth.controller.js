@@ -1,5 +1,9 @@
 const userModel = require("./../../models/User.model");
 
+exports.showRegisterView = (req, res) => {
+    res.render("auth/register");
+};
+
 exports.register = async (req, res) => {
     try {
         const {

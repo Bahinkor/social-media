@@ -6,6 +6,7 @@ const {registerValidatorSchema} = require("./auth.validator");
 const authRouter = express.Router();
 
 authRouter.route("/register")
+    .get(authController.showRegisterView)
     .post(validatorMiddleware(registerValidatorSchema), authController.register);
 
 module.exports = authRouter;
