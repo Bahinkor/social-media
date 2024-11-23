@@ -37,7 +37,7 @@ exports.register = async (req, res) => {
             role: +usersCount < 1 ? "ADMIN" : "USER",
         });
 
-        const jwtToken = jwt.sign({userID: user._id}, process.env.REFRESH_TOKEN_SECRET, {
+        const jwtToken = jwt.sign({userID: user._id}, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: "30day"
         });
 
@@ -45,6 +45,7 @@ exports.register = async (req, res) => {
         res.cookie("token", jwtToken, {
             maxAge: 900_000,
             httpOnly: true,
+            path: "/",
         });
 
         req.flash("success", "User registered successfully.");
