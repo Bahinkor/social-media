@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const userModel = require("./../../models/User.model");
 
 exports.showRegisterView = (req, res) => {
@@ -28,12 +29,22 @@ exports.register = async (req, res) => {
 
         const usersCount = await userModel.countDocuments({});
 
-        await userModel.create({
+        const user = await userModel.create({
             email,
             username,
             name,
             password,
             role: +usersCount < 1 ? "ADMIN" : "USER",
+        });
+
+        const jwtToken = jwt.sign({userID: user._id}, process.env.REFRESH_TOKEN_SECRET, {
+            expiresIn: "30day"
+        });
+
+        // refresh token set cookie
+        res.cookie("token", jwtToken, {
+            maxAge: 900_000,
+            httpOnly: true,
         });
 
         req.flash("success", "User registered successfully.");
