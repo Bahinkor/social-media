@@ -18,9 +18,12 @@ exports.register = async (req, res) => {
         });
 
         if (isUserExist) {
-            return res.status(400).json({
-                message: "User already exists!",
-            });
+            req.flash("error", "User already exists!");
+            return res.redirect("/auth/register");
+
+            // return res.status(400).json({
+            //     message: "User already exists!",
+            // });
         }
 
         const usersCount = await userModel.countDocuments({});
@@ -33,14 +36,19 @@ exports.register = async (req, res) => {
             role: +usersCount < 1 ? "ADMIN" : "USER",
         });
 
-        res.status(201).json({
-            message: "User created successfully",
-        });
+        req.flash("success", "User registered successfully.");
+        return res.redirect("/auth/register");
+
+        // res.status(201).json({
+        //     message: "User created successfully",
+        // });
 
     } catch (err) {
         console.log(`auth, register controller failed. error: ${err}`);
-        res.status(500).json({
-            message: err.message || "Something went wrong.",
-        });
+        req.flash("error", "Internal Server Error!");
+
+        // res.status(500).json({
+        //     message: err.message || "Something went wrong.",
+        // });
     }
 };
