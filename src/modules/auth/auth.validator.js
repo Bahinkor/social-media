@@ -20,6 +20,18 @@ const registerValidatorSchema = joi.object({
         .required(),
 });
 
+const loginValidatorSchema = joi.object({
+    username: joi.string()
+        .min(3)
+        .max(200)
+        .required(),
+    password: joi.string()
+        .min(6)
+        .max(50)
+        .required(),
+});
+
 module.exports = {
     registerValidatorSchema,
+    loginValidatorSchema,
 };
