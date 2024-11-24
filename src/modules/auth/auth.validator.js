@@ -1,6 +1,6 @@
 const joi = require("joi");
 
-const registerValidatorSchema = joi.object({
+const registerValidationSchema = joi.object({
     email: joi.string()
         .email()
         .required(),
@@ -20,7 +20,7 @@ const registerValidatorSchema = joi.object({
         .required(),
 });
 
-const loginValidatorSchema = joi.object({
+const loginValidationSchema = joi.object({
     username: joi.string()
         .min(3)
         .max(200)
@@ -32,6 +32,6 @@ const loginValidatorSchema = joi.object({
 });
 
 module.exports = {
-    registerValidatorSchema,
-    loginValidatorSchema,
+    registerValidationSchema,
+    loginValidationSchema,
 };
