@@ -4,9 +4,14 @@ const schema = new mongoose.Schema({
     media: {
         path: {type: String, required: true},
         filename: {type: String, required: true},
+        required: true,
     },
     description: {
         type: String,
+        required: true,
+    },
+    hashtags: {
+        type: [String],
     },
     user: {
         type: mongoose.Types.ObjectId,
