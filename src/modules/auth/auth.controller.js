@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("./../../models/User.model");
+const refreshTokenModel = require("../../models/RefreshToken.model");
 
 exports.showRegisterView = (req, res) => {
     res.render("auth/register");
@@ -37,12 +38,21 @@ exports.register = async (req, res) => {
             role: +usersCount < 1 ? "ADMIN" : "USER",
         });
 
-        const jwtToken = jwt.sign({userID: user._id}, process.env.ACCESS_TOKEN_SECRET, {
+        const accessToken = jwt.sign({userID: user._id}, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: "30day"
         });
 
-        // refresh token set cookie
-        res.cookie("token", jwtToken, {
+        // * refresh token static method
+        const refreshToken = await refreshTokenModel.createToken(user);
+
+        // access & refresh token set cookie
+        res.cookie("access-token", accessToken, {
+            maxAge: 900_000,
+            httpOnly: true,
+            path: "/",
+        });
+
+        res.cookie("refresh-token", refreshToken, {
             maxAge: 900_000,
             httpOnly: true,
             path: "/",
