@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const authRoutes = require("./modules/auth/auth.routes");
 const postRoutes = require("./modules/post/post.routes");
+const pageRoutes = require("./modules/page/page.routes");
 const flash = require("express-flash");
 const session = require("express-session");
 
@@ -55,6 +56,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/post", postRoutes);
+app.use("/page", pageRoutes);
 
 // ! 404 error handler
 app.use((req, res, next) => {
@@ -65,6 +67,7 @@ app.use((req, res, next) => {
 
 // ! 500 error handler
 app.use((err, req, res, next) => {
+    console.error(err);
     res.status(500).json({
         message: err.message || "Something went wrong.",
     });
