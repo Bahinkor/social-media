@@ -50,7 +50,7 @@
 
 <!-- Main -->
 <main id="post-upload-wrapper">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
     <section id="post-upload-container">
         <!-- File Upload -->
         <div class="post-upload-box">
@@ -77,7 +77,7 @@
                     Browse file
                 </p>
 
-                <input type="file" id="file-upload-input" accept="video/*, image/*">
+                <input type="file" name="media" id="file-upload-input" accept="video/*, image/*">
             </div>
         </div>
 
@@ -96,7 +96,7 @@
                         </span>
                     <span class="requre-symbol">*</span>
                 </label>
-                <textarea name="post-description" id="post-description" placeholder="Add a description .."
+                <textarea name="description" id="post-description" placeholder="Add a description .."
                           class="w-full mt-4"></textarea>
             </div>
 
@@ -108,7 +108,7 @@
                         </span>
                     <span class="requre-symbol">*</span>
                 </label>
-                <input type="text" id="post-hashtags" placeholder="javascript, edit, trend, explore, ne...">
+                <input type="text" name="hashtags" id="post-hashtags" placeholder="javascript, edit, trend, explore, ne...">
                 <div id="hashtags-wrap" class="flex text-sm my-2 items-center gap-2">
 
                 </div>
@@ -131,7 +131,7 @@
 
             <!-- Upload Button -->
             <div class="mt-4 flex items-center justify-end">
-                <button id="upload-button" class="max-w-max">
+                <button type="submit" id="upload-button" class="max-w-max">
                     Upload post
                 </button>
             </div>
