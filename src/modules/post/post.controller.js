@@ -16,7 +16,7 @@ exports.createPost = async (req, res) => {
             return res.render("post/upload");
         }
 
-        const mediaUrlPath = `posts/${req.file.filename}`;
+        const mediaUrlPath = `images/posts/${req.file.filename}`;
 
         await postModel.create({
             media: {

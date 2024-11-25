@@ -17,7 +17,7 @@ exports.multerStorage = (destination, allowedTypes = /jpeg|jpg|png|webp/) => {
         filename: (req, file, cb) => {
             const unique = Date.now() * Math.floor(Math.random() * 1e9);
             const ext = path.extname(file.originalname);
-            cd(null, `${unique}${ext}`);
+            cb(null, `${unique}${ext}`);
         },
     });
 
@@ -26,7 +26,7 @@ exports.multerStorage = (destination, allowedTypes = /jpeg|jpg|png|webp/) => {
         if (allowedTypes.test(file.mimetype)) {
             cb(null, true);
         } else {
-            cb(new Error("Invalid file type"));
+            cb(new Error("Invalid file type."));
         }
     };
 

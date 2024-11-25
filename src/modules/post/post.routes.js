@@ -11,6 +11,6 @@ const uploader = multerStorage("public/images/posts", /jpeg|jpg|png|webp|mp4|mkv
 
 postRouter.route("/")
     .get(authMiddleware, accountVerifyMiddleware, postController.showPostUploadView)
-    .post(authMiddleware, accountVerifyMiddleware, validationMiddleware(createPostValidationSchema), uploader.single("media"), postController.createPost);
+    .post(authMiddleware, uploader.single("media"), validationMiddleware(createPostValidationSchema), postController.createPost);
 
 module.exports = postRouter;

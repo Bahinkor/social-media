@@ -150,6 +150,22 @@
 
 <!-- Scripts -->
 <script src="/src/Functions/index.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    if ("<%= locals.messages.error %>") {
+        swal({
+            title: "<%= locals.messages.error %>",
+            icon: "error",
+            buttons: "ok"
+        });
+    } else if ("<%= locals.messages.success %>") {
+        swal({
+            title: "<%= locals.messages.success %>",
+            icon: "success",
+            buttons: "ok"
+        });
+    }
+</script>
 
 </body>
 
