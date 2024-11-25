@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const userModel = require("./../models/User.model");
 
-const authMiddleware = (req, res, next) => {
+const authMiddleware = async (req, res, next) => {
     try {
         const accessToken = req.cookies["access-token"];
 
@@ -18,7 +18,8 @@ const authMiddleware = (req, res, next) => {
         }
 
         const userID = payload.userID;
-        const user = userModel.findOne({
+
+        const user = await userModel.findOne({
             _id: userID,
         }).lean();
 
