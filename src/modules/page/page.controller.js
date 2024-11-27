@@ -27,12 +27,20 @@ exports.getPage = async (req, res, next) => {
             return res.render("page/index", {
                 followed: Boolean(isFollowed),
                 pageID,
+                followers: false,
             });
         }
+
+        let followers = await followModel.find({
+            following: pageID,
+        }).populate("follower", "name username");
+
+        followers = followers.map(item => item.follower);
 
         res.render("page/index", {
             followed: Boolean(isFollowed),
             pageID,
+            followers,
         });
 
     } catch (err) {

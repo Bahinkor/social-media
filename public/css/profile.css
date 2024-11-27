@@ -209,7 +209,8 @@ main.container {
     visibility: visible;
 }
 
-#modal-card {
+#modal-card,
+#followers-modal-card {
     width: 380px;
     padding: 21px 12px;
     background: white;

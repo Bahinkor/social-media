@@ -1,49 +1,49 @@
 const $ = document;
 
 const tabs = [
-  {
-    id: 1,
-    title: "Posts",
-    items: [
-      {
-        cover: "/images/feed-3.jpg",
-        caption:
-          "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! 💖🙌",
-      },
-      {
-        cover: "/images/feed-1.jpg",
-        caption:
-          "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! 💖🙌",
-      },
-      {
-        cover: "/images/feed-4.jpg",
-        caption:
-          "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! 💖🙌",
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: "Reels",
-    items: [
-      { cover: "/images/feed-1.jpg" },
-      { cover: "/images/feed-2.jpg" },
-      { cover: "/images/feed-3.jpg" },
-      { cover: "/images/feed-4.jpg" },
-      { cover: "/images/feed-5.jpg" },
-      { cover: "/images/feed-6.jpg" },
-    ],
-  },
-  {
-    id: 3,
-    title: "Pictures",
-    items: [],
-  },
-  {
-    id: 4,
-    title: "Reposts",
-    items: [],
-  },
+    {
+        id: 1,
+        title: "Posts",
+        items: [
+            {
+                cover: "/images/feed-3.jpg",
+                caption:
+                    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! 💖🙌",
+            },
+            {
+                cover: "/images/feed-1.jpg",
+                caption:
+                    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! 💖🙌",
+            },
+            {
+                cover: "/images/feed-4.jpg",
+                caption:
+                    "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque mollitia deleniti cum similique unde atque sapiente! 💖🙌",
+            },
+        ],
+    },
+    {
+        id: 2,
+        title: "Reels",
+        items: [
+            {cover: "/images/feed-1.jpg"},
+            {cover: "/images/feed-2.jpg"},
+            {cover: "/images/feed-3.jpg"},
+            {cover: "/images/feed-4.jpg"},
+            {cover: "/images/feed-5.jpg"},
+            {cover: "/images/feed-6.jpg"},
+        ],
+    },
+    {
+        id: 3,
+        title: "Pictures",
+        items: [],
+    },
+    {
+        id: 4,
+        title: "Reposts",
+        items: [],
+    },
 ];
 
 let currentTab = "Posts";
@@ -56,36 +56,51 @@ const feedsContainer = $.querySelector("#feeds-container");
 const modal = $.querySelector("#modal-card");
 const modalScreen = $.querySelector("#modal");
 
+const followersButton = $.querySelector("#followers-button");
+const followersModal = $.querySelector("#followers-modal");
+const followersModalCard = $.querySelector("#followers-modal-card");
+
 const followingsButton = $.querySelector("#followings");
 const closeButton = $.querySelector("#close-button");
 
 const sendVerificationButton = $.querySelector(".send-verification");
+// start followers modal section
+followersModalCard.addEventListener("click", (event) => {
+    event.stopPropagation();
+});
+
+followersButton.addEventListener("click", (event) => {
+    followersModal.classList.contains("visible")
+        ? followersModal.classList.remove("visible")
+        : followersModal.classList.add("visible");
+});
+
+followersModal.addEventListener("click", (event) => {
+    followersModal.classList.contains("visible")
+        ? followersModal.classList.remove("visible")
+        : followersModal.classList.add("visible");
+});
+// finish followers modal section
 
 modal.addEventListener("click", (event) => {
-  event.stopPropagation();
+    event.stopPropagation();
 });
 
 followingsButton.addEventListener("click", () => {
-  modalScreen.classList.contains("visible")
-    ? modalScreen.classList.remove("visible")
-    : modalScreen.classList.add("visible");
+    modalScreen.classList.contains("visible")
+        ? modalScreen.classList.remove("visible")
+        : modalScreen.classList.add("visible");
 
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML(
-    "afterbegin",
-    `
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML(
+        "afterbegin",
+        `
     <header id="modal-header" class="w-full pb-4 flex items-center justify-between">
     <div></div>
     <div class="pl-5">
         Following
     </div>
-    <button onclick="modalCloseHandler()" id="close-button" class="max-w-max flex-center">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-            stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-        </svg>
-
-    </button>
+    <button onclick="modalCloseHandler()" id="close-button" class="max-w-max flex-center"></button>
 </header>
 <main class="mt-2">
     <article class="following-card ">
@@ -177,22 +192,22 @@ followingsButton.addEventListener("click", () => {
         </div>
     </article>
 </main>`
-  );
+    );
 });
 
 const modalCloseHandler = () => {
-  modalScreen.classList.remove("visible");
+    modalScreen.classList.remove("visible");
 };
 const modalOpenHandler = () => {
-  modalScreen.classList.add("visible");
+    modalScreen.classList.add("visible");
 };
 
 sendVerificationButton.addEventListener("click", (event) => {
-  modalOpenHandler();
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML(
-    "afterbegin",
-    `
+    modalOpenHandler();
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML(
+        "afterbegin",
+        `
     <header id="modal-header" class="w-full pb-4 flex items-center justify-between">
     <div></div>
     <div class="pl-5">
@@ -218,15 +233,15 @@ Send verification
 </footer>
 
 `
-  );
+    );
 });
 
 const codeSentHandler = (event) => {
-  modalOpenHandler();
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML(
-    "afterbegin",
-    `
+    modalOpenHandler();
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML(
+        "afterbegin",
+        `
     <header id="modal-header" class="w-full pb-4 flex items-center justify-between">
     <div></div>
     <div class="pl-5">
@@ -256,20 +271,20 @@ VERIFY
 </button>
 </footer>
 `
-  );
+    );
 };
 
 const redirector = () => {
-  console.log("hi");
-  window.location.reload();
+    console.log("hi");
+    window.location.reload();
 };
 
 const successfullyVerification = () => {
-  modalOpenHandler();
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML(
-    "afterbegin",
-    `
+    modalOpenHandler();
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML(
+        "afterbegin",
+        `
     <header id="modal-header" class="w-full pb-4 flex items-center justify-between">
     <div></div>
     <div class="pl-5">
@@ -291,15 +306,15 @@ CONTINUE
 </button>
 </footer>
 `
-  );
+    );
 };
 
 const failureVerification = () => {
-  modalOpenHandler();
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML(
-    "afterbegin",
-    `
+    modalOpenHandler();
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML(
+        "afterbegin",
+        `
     <header id="modal-header" class="w-full pb-4 flex items-center justify-between">
     <div></div>
     <div class="pl-5">
@@ -321,49 +336,49 @@ CONTINUE
 </button>
 </footer>
 `
-  );
+    );
 };
 
 const verifyCodeHandler = (OTP) => {
-  if (OTP) {
-    successfullyVerification();
-  } else {
-    failureVerification();
-  }
+    if (OTP) {
+        successfullyVerification();
+    } else {
+        failureVerification();
+    }
 };
 
 modalScreen.addEventListener("click", (event) => {
-  modalCloseHandler();
+    modalCloseHandler();
 });
 
 document.onkeydown = (event) => {
-  const { keyCode } = event;
-  keyCode === 27 && modalScreen.classList.remove("visible");
+    const {keyCode} = event;
+    keyCode === 27 && modalScreen.classList.remove("visible");
 };
 
 const tabsFunc = () => {
-  buttonsContainer.innerHTML = "";
-  feedsContainer.innerHTML = "";
-  tabs.forEach((element) => {
-    buttonsContainer.insertAdjacentHTML(
-      "beforeend",
-      `<button onclick="changePage('${
-        element.title
-      }')" class='profile-feed__button ${
-        currentTab === element.title ? "isActive" : ""
-      }'>
+    buttonsContainer.innerHTML = "";
+    feedsContainer.innerHTML = "";
+    tabs.forEach((element) => {
+        buttonsContainer.insertAdjacentHTML(
+            "beforeend",
+            `<button onclick="changePage('${
+                element.title
+            }')" class='profile-feed__button ${
+                currentTab === element.title ? "isActive" : ""
+            }'>
         ${element.title}
     </button>`
-    );
+        );
 
-    if (currentTab === element.title) {
-      if (element.items.length && element.title === "Posts") {
-        feedsContainer.className = "";
-        element.items.forEach((item) => {
-          // نمایش محتوای هر آیتم
-          feedsContainer.insertAdjacentHTML(
-            "beforeend",
-            `
+        if (currentTab === element.title) {
+            if (element.items.length && element.title === "Posts") {
+                feedsContainer.className = "";
+                element.items.forEach((item) => {
+                    // نمایش محتوای هر آیتم
+                    feedsContainer.insertAdjacentHTML(
+                        "beforeend",
+                        `
                 <article class="profile-feed-card">
                 <div>
                     <header>
@@ -449,17 +464,17 @@ const tabsFunc = () => {
                 </div>
             </article>
         `
-          );
-        });
-      }
-      if (element.items.length && element.title === "Reels") {
-        element.items.forEach((item) => {
-          // نمایش محتوای هر آیتم
-          feedsContainer.className =
-            "flex items-center reels_container flex-wrap gap-3 mt-5";
-          feedsContainer.insertAdjacentHTML(
-            "beforeend",
-            `
+                    );
+                });
+            }
+            if (element.items.length && element.title === "Reels") {
+                element.items.forEach((item) => {
+                    // نمایش محتوای هر آیتم
+                    feedsContainer.className =
+                        "flex items-center reels_container flex-wrap gap-3 mt-5";
+                    feedsContainer.insertAdjacentHTML(
+                        "beforeend",
+                        `
                     <article class="reel">
                     <div class="reel-details">
                         <div>
@@ -490,19 +505,19 @@ const tabsFunc = () => {
                     <img src="${item.cover}" alt="" class="content">
                 </article>
         `
-          );
-        });
-      }
-    }
-  });
-  const emptySections = tabs.filter((element) => !element.items.length);
+                    );
+                });
+            }
+        }
+    });
+    const emptySections = tabs.filter((element) => !element.items.length);
 
-  emptySections.forEach((element) => {
-    if (element.title === currentTab) {
-      feedsContainer.className = "";
-      feedsContainer.insertAdjacentHTML(
-        "beforeend",
-        `
+    emptySections.forEach((element) => {
+        if (element.title === currentTab) {
+            feedsContainer.className = "";
+            feedsContainer.insertAdjacentHTML(
+                "beforeend",
+                `
             <div class="its-empty">
             <div class="font-Poppins-Bold text-lg text-gray-900">
                 Aww, Nothing to show :(
@@ -512,14 +527,14 @@ const tabsFunc = () => {
             </div>
             </div>
     `
-      );
-    }
-  });
+            );
+        }
+    });
 };
 
 tabsFunc();
 
 const changePage = (title) => {
-  currentTab = title;
-  tabsFunc();
+    currentTab = title;
+    tabsFunc();
 };
