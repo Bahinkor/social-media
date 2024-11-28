@@ -64,6 +64,8 @@ exports.getPage = async (req, res, next) => {
             user: pageID,
         }).sort({_id: -1}).populate("user", "name username");
 
+        const isOwn = user._id.equals(pageID);
+
         res.render("page/index", {
             followed: Boolean(isFollowed),
             pageID,
@@ -71,6 +73,7 @@ exports.getPage = async (req, res, next) => {
             followings,
             page,
             posts,
+            isOwn,
         });
 
     } catch (err) {
