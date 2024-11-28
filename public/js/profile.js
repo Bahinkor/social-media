@@ -202,7 +202,7 @@ const modalOpenHandler = () => {
     modalScreen.classList.add("visible");
 };
 
-sendVerificationButton.addEventListener("click", (event) => {
+sendVerificationButton?.addEventListener("click", (event) => {
     modalOpenHandler();
     modal.innerHTML = "";
     modal.insertAdjacentHTML(

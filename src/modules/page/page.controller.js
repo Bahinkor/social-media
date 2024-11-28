@@ -22,12 +22,22 @@ exports.getPage = async (req, res, next) => {
             following: pageID,
         });
 
+        const page = await userModel.findOne({
+            _id: pageID,
+        }, "name username isVerified biography").lean();
+
+        if (!page) {
+            req.flash("error", "this page is not found.");
+            return res.redirect("/");
+        }
+
         if (!hasAccess) {
             req.flash("error", "please follow page to show content.");
             return res.render("page/index", {
                 followed: Boolean(isFollowed),
                 pageID,
                 followers: false,
+                page,
             });
         }
 
@@ -41,6 +51,7 @@ exports.getPage = async (req, res, next) => {
             followed: Boolean(isFollowed),
             pageID,
             followers,
+            page,
         });
 
     } catch (err) {

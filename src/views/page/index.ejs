@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profie |Lena Mc'Queen</title>
+    <title>Profie | <%= page.name %></title>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/profile.css">
@@ -68,19 +68,18 @@
                     <div>
                         <!-- Profile username -->
                         <h4 id="profile-username" class="text-xl font-Poppins-Bold">
-                            Hosna kazemi
+                            <%= page.name %>
                         </h4>
 
                         <!-- Profile id -->
                         <p id="profile-id">
-                            @hosna
+                            @<%= page.username %>
                         </p>
 
 
                         <!-- Profile Caption -->
                         <p class="mt-4" id="profile-caption">
-                            Lorem ipsum dolor sit amet, consectetur <a href="#" class="url">@rad_front</a> elit. Est
-                            sint molestias eligendi. ⏰
+                            <%= page.biography %>
                         </p>
 
                         <!-- Profile Link -->
@@ -92,7 +91,7 @@
                             </svg>
 
                             <a href="#" class="url text-sm">
-                                https://sabzlearn.ir
+                                https://google.com
                             </a>
                         </div>
                         <!-- Profile Followers/Following count -->
@@ -136,18 +135,20 @@
 
 
                 <!-- Verification Required Alert -->
-                <div class="alert error">
-                    <div>
+                <% if (!page.isVerified) { %>
+                    <div class="alert error">
+                        <div>
                             <span>
                                 This account need to get verificated
                             </span>
+                        </div>
+                        <div>
+                            <button class="send-verification">
+                                Send verification
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <button class="send-verification">
-                            Send verification
-                        </button>
-                    </div>
-                </div>
+                <% } %>
             </main>
         </div>
 
