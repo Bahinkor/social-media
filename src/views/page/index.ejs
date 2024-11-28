@@ -101,7 +101,7 @@
                                 <span class="text-gray-700">Followers</span>
                             </div>
                             <div id="followings" class="flex items-center cursor-pointer gap-1">
-                                <span class="count">4</span>
+                                <span class="count"><%= followings?.length %></span>
                                 <span class="text-gray-700">Following</span>
                             </div>
                         </div>
@@ -410,6 +410,47 @@
 <!-- Modal -->
 <section id="modal" class="modal-screen">
     <section id="modal-card">
+        <header id="modal-header" class="w-full pb-4 flex items-center justify-between">
+            <div></div>
+            <div class="pl-5">
+                Followers (<%= followings?.length %>)
+            </div>
+            <button onclick="modalCloseHandler()" id="close-button" class="max-w-max flex-center"></button>
+        </header>
+        <main class="mt-2">
+            <% if (followings === false) { %>
+                <h1 style="text-align: center">You can't access to followings.</h1>
+            <% } %>
+
+            <% if (followings?.length > 0) { %>
+                <% followings?.forEach(following => { %>
+                    <article class="following-card ">
+                        <div class="flex items-center gap-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-12 h-12 rounded-full overflow-hidden">
+                                    <img src="/images/feed-3.jpg" class="w-full object-cover h-full" alt="">
+                                </div>
+                                <div>
+                                    <h6 class="">
+                                        <%= following.name %>
+                                    </h6>
+                                    <p class="text-sm font-Poppins-Light text-gray-600">
+                                        @<%= following.username %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <button class="follow-button text-xs">
+                                Follow
+                            </button>
+                        </div>
+                    </article>
+                <% }) %>
+            <% } else { %>
+                <h1 style="text-align: center">This page does not have followers.</h1>
+            <% } %>
+        </main>
     </section>
 </section>
 

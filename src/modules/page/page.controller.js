@@ -37,20 +37,31 @@ exports.getPage = async (req, res, next) => {
                 followed: Boolean(isFollowed),
                 pageID,
                 followers: false,
+                followings: false,
                 page,
             });
         }
 
+        // find followers
         let followers = await followModel.find({
             following: pageID,
         }).populate("follower", "name username");
 
         followers = followers.map(item => item.follower);
 
+        // find followings
+
+        let followings = await followModel.find({
+            follower: pageID,
+        }).populate("following", "name username");
+
+        followings = followings.map(item => item.following);
+
         res.render("page/index", {
             followed: Boolean(isFollowed),
             pageID,
             followers,
+            followings,
             page,
         });
 
