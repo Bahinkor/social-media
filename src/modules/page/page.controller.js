@@ -1,6 +1,7 @@
 const {isValidObjectId} = require("mongoose");
 const followModel = require("./../../models/Follow.model");
 const userModel = require("./../../models/User.model");
+const postModel = require("./../../models/Post.model");
 const hasAccessToPage = require("../../utils/hasAccessToPage.util");
 
 exports.getPage = async (req, res, next) => {
@@ -39,6 +40,7 @@ exports.getPage = async (req, res, next) => {
                 followers: false,
                 followings: false,
                 page,
+                posts: false,
             });
         }
 
@@ -57,12 +59,18 @@ exports.getPage = async (req, res, next) => {
 
         followings = followings.map(item => item.following);
 
+        // find posts
+        const posts = await postModel.find({
+            user: pageID,
+        }).sort({_id: -1}).populate("user", "name username");
+
         res.render("page/index", {
             followed: Boolean(isFollowed),
             pageID,
             followers,
             followings,
             page,
+            posts,
         });
 
     } catch (err) {

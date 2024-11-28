@@ -11,6 +11,7 @@ main.container {
 
 #profile-details-card {
     background: white;
+    border-radius: 0 0 10px 10pxs;
 }
 
 .profile-header {

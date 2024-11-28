@@ -5,7 +5,8 @@ const createPostValidationSchema = joi.object({
         .min(1)
         .max(750)
         .required(),
-    hashtags: joi.string(),
+    hashtags: joi.string()
+        .min(0),
 });
 
 module.exports = {
