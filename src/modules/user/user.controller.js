@@ -51,24 +51,19 @@ exports.editData = async (req, res, next) => {
             await userModel.findOneAndUpdate(
                 {_id: userID},
                 {
-                    name,
-                    email,
-                    username,
                     profilePicture: picturePath,
-                },
-                {new: true}, // return updated user document
-            );
-        } else {
-            await userModel.findOneAndUpdate(
-                {_id: userID},
-                {
-                    name,
-                    email,
-                    username,
-                },
-                {new: true}, // return updated user document
+                }
             );
         }
+
+        await userModel.findOneAndUpdate(
+            {_id: userID},
+            {
+                name,
+                email,
+                username,
+            }
+        );
 
         req.flash("success", "User data saved successfully.");
         res.redirect(`/page/${userID}`);
