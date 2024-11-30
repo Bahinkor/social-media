@@ -92,7 +92,8 @@ exports.like = async (req, res, next) => {
 
 exports.dislike = async (req, res, next) => {
     try {
-
+        res.send("ok");
+        
     } catch (err) {
         next(err);
     }

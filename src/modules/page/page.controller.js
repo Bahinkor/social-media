@@ -2,6 +2,7 @@ const {isValidObjectId} = require("mongoose");
 const followModel = require("./../../models/Follow.model");
 const userModel = require("./../../models/User.model");
 const postModel = require("./../../models/Post.model");
+const likeModel = require("./../../models/Like.model");
 const hasAccessToPage = require("../../utils/hasAccessToPage.util");
 
 exports.getPage = async (req, res, next) => {
@@ -62,7 +63,19 @@ exports.getPage = async (req, res, next) => {
         // find posts
         const posts = await postModel.find({
             user: pageID,
-        }).sort({_id: -1}).populate("user", "name username profilePicture");
+        }).sort({_id: -1}).populate("user", "name username profilePicture").lean();
+
+        const likes = await likeModel.find({
+            user: user._id,
+        }).populate("user", "_id").populate("post", "_id").lean();
+
+        const likedPostIds = new Set(likes.map(like => like.post._id.toString()));
+        const postWithLike = posts.map(post => ({
+            ...post,
+            hasLike: likedPostIds.has(post._id.toString())
+        }));
+        console.log("like ids =>", likedPostIds);
+        console.log("post with like =>", postWithLike);
 
         const isOwn = user._id.equals(pageID);
 
@@ -72,7 +85,7 @@ exports.getPage = async (req, res, next) => {
             followers,
             followings,
             page,
-            posts,
+            posts: postWithLike,
             isOwn,
         });
 
