@@ -207,8 +207,9 @@
                                         <div class="feed-card-content">
 
                                             <div class="feed-buttons">
-                                                <form method="post">
-                                                    <button class="max-w-max">
+                                                <form method="post" action="/post/like">
+                                                    <input type="hidden" name="postID" value="<%= post._id %>">
+                                                    <button type="submit" class="max-w-max">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                          stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                                         <path stroke-linecap="round" stroke-linejoin="round"

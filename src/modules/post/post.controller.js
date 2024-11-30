@@ -1,4 +1,7 @@
+const {isValidObjectId} = require("mongoose");
 const postModel = require("./../../models/Post.model");
+const likeModel = require("../../models/Like.model");
+const hasAccessToPage = require("./../../utils/hasAccessToPage.util")
 
 exports.showPostUploadView = (req, res) => {
     res.render("post/upload");
@@ -40,6 +43,47 @@ exports.createPost = async (req, res) => {
 
 exports.like = async (req, res, next) => {
     try {
+        const user = req.user;
+        const {postID} = req.body;
+
+        const isValidID = isValidObjectId(postID);
+
+        if (!isValidID) {
+            req.flash("error", "Post ID is not valid!");
+            return res.redirect("back");
+        }
+
+        const post = await postModel.findOne({
+            _id: postID,
+        });
+
+        if (!post) {
+            req.flash("error", "Post not found!");
+            return res.redirect("back");
+        }
+
+        const hasAccess = await hasAccessToPage(user._id, post.user);
+
+        if (!hasAccess) {
+            req.flash("error", "your not access this post!");
+            return res.redirect("back");
+        }
+
+        const isExistingLike = await likeModel.findOne({
+            post: postID,
+            user: user._id,
+        });
+
+        if (isExistingLike) {
+            return res.redirect(`/page/${post.user}`);
+        }
+
+        await likeModel.create({
+            post: postID,
+            user: user._id,
+        });
+
+        res.redirect(`/page/${post.user}`);
 
     } catch (err) {
         next(err);
