@@ -7,6 +7,7 @@ const morgan = require("morgan");
 const authRoutes = require("./modules/auth/auth.routes");
 const postRoutes = require("./modules/post/post.routes");
 const pageRoutes = require("./modules/page/page.routes");
+const userRoutes = require("./modules/user/user.routes");
 const flash = require("express-flash");
 const session = require("express-session");
 
@@ -57,6 +58,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/post", postRoutes);
 app.use("/page", pageRoutes);
+app.use("/user", userRoutes);
 
 // ! 404 error handler
 app.use((req, res, next) => {

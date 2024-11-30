@@ -110,7 +110,7 @@
                     <!-- Manage -->
                     <div class="flex items-center gap-2">
                         <% if (isOwn) { %>
-                            <a href="/src/Pages/ProfileUpdate/Hosna/index.html"
+                            <a href="/user/edit-profile"
                                class="min-w-max flex items-center gap-1 manage-button">
                                 <span>
                                     Manage
@@ -118,13 +118,13 @@
                             </a>
                         <% } %>
 
-                        <% if (followed) { %>
+                        <% if (followed && !isOwn) { %>
                             <form method="post" action="/page/<%= pageID %>/unfollow">
                                 <button type="submit" class="unfollow-button font-Poppins-Bold">
                                     Unfollow
                                 </button>
                             </form>
-                        <% } else { %>
+                        <% } else if (!followed && !isOwn) { %>
                             <form method="post" action="/page/<%= pageID %>/follow">
                                 <button type="submit" class="unfollow-button font-Poppins-Bold">
                                     Follow
