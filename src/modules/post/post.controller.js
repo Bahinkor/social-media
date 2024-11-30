@@ -37,3 +37,19 @@ exports.createPost = async (req, res) => {
         res.redirect("/post");
     }
 };
+
+exports.like = async (req, res, next) => {
+    try {
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.dislike = async (req, res, next) => {
+    try {
+
+    } catch (err) {
+        next(err);
+    }
+};

@@ -13,4 +13,10 @@ postRouter.route("/")
     .get(authMiddleware, accountVerifyMiddleware, postController.showPostUploadView)
     .post(authMiddleware, uploader.single("media"), validationMiddleware(createPostValidationSchema), postController.createPost);
 
+postRouter.route("/like")
+    .post(authMiddleware, postController.like);
+
+postRouter.route("/dislike")
+    .post(authMiddleware, postController.dislike);
+
 module.exports = postRouter;
