@@ -25,7 +25,7 @@ exports.getPage = async (req, res, next) => {
 
         const page = await userModel.findOne({
             _id: pageID,
-        }, "name username isVerified biography").lean();
+        }, "name username isVerified biography profilePicture").lean();
 
         if (!page) {
             req.flash("error", "this page is not found.");
@@ -47,7 +47,7 @@ exports.getPage = async (req, res, next) => {
         // find followers
         let followers = await followModel.find({
             following: pageID,
-        }).populate("follower", "name username");
+        }).populate("follower", "name username profilePicture");
 
         followers = followers.map(item => item.follower);
 
@@ -55,14 +55,14 @@ exports.getPage = async (req, res, next) => {
 
         let followings = await followModel.find({
             follower: pageID,
-        }).populate("following", "name username");
+        }).populate("following", "name username profilePicture");
 
         followings = followings.map(item => item.following);
 
         // find posts
         const posts = await postModel.find({
             user: pageID,
-        }).sort({_id: -1}).populate("user", "name username");
+        }).sort({_id: -1}).populate("user", "name username profilePicture");
 
         const isOwn = user._id.equals(pageID);
 

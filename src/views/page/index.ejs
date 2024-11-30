@@ -59,7 +59,11 @@
 
                 <!-- Profile Image -->
                 <span class="profile-pic-card">
-                        <img src="/images/profile-3.jpg" class="profile-pic" alt="">
+                    <% if (page.profilePicture) { %>
+                        <img src="http://localhost:8000/<%= page.profilePicture %>" class="profile-pic" alt="profile picture">
+                    <% } else { %>
+                        <img src="/images/default-profile.jpg" class="profile-pic" alt="profile picture">
+                    <% } %>
                     </span>
             </header>
             <main class="profile-main">
@@ -179,8 +183,13 @@
                             <article class="profile-feed-card">
                                 <div>
                                     <header>
-                                        <img src="/images/profile-1.jpg" alt="profile picture"
-                                             class="feed-profile-picture">
+                                        <% if (post.user.profilePicture) { %>
+                                            <img src="http://localhost:8000/<%= post.user.profilePicture %>" alt="profile picture"
+                                                 class="feed-profile-picture">
+                                        <% } else { %>
+                                                <img src="/images/default-profile.jpg" alt="profile picture"
+                                                     class="feed-profile-picture">
+                                        <% } %>
                                     </header>
                                 </div>
                                 <div class="w-full">
@@ -534,7 +543,11 @@
                         <div class="flex items-center gap-1">
                             <div class="flex items-center gap-2">
                                 <div class="w-12 h-12 rounded-full overflow-hidden">
-                                    <img src="/images/feed-3.jpg" class="w-full object-cover h-full" alt="">
+                                    <% if (following.profilePicture) { %>
+                                        <img src="http://localhost:8000/<%= following.profilePicture %>" class="w-full object-cover h-full" alt="profile picture">
+                                    <% } else { %>
+                                            <img src="/images/default-profile.jpg" class="w-full object-cover h-full" alt="profile picture">
+                                    <% } %>
                                 </div>
                                 <div>
                                     <h6 class="">
@@ -580,7 +593,11 @@
                             <div class="flex items-center gap-1">
                                 <div class="flex items-center gap-2">
                                     <div class="w-12 h-12 rounded-full overflow-hidden">
-                                        <img src="/images/feed-3.jpg" class="w-full object-cover h-full" alt="">
+                                        <% if (follower.profilePicture) { %>
+                                            <img src="http://localhost:8000/<%= follower.profilePicture %>" class="w-full object-cover h-full" alt="profile picture">
+                                        <% } else { %>
+                                            <img src="/images/default-profile.jpg" class="w-full object-cover h-full" alt="profile picture">
+                                        <% } %>
                                     </div>
                                     <div>
                                         <h6 class="">
