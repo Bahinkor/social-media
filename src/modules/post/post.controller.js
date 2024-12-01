@@ -92,8 +92,23 @@ exports.like = async (req, res, next) => {
 
 exports.dislike = async (req, res, next) => {
     try {
-        res.send("ok");
-        
+        const user = req.user;
+        const {postID} = req.body;
+
+        const isValidPostID = isValidObjectId(postID);
+
+        if (!isValidPostID) {
+            req.flash("error", "Post ID is not valid!");
+            return res.redirect("back");
+        }
+
+        await likeModel.findOneAndDelete({
+            post: postID,
+            user: user._id,
+        });
+
+        res.redirect(`/page/${user._id}`);
+
     } catch (err) {
         next(err);
     }
