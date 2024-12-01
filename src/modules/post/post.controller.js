@@ -1,6 +1,7 @@
 const {isValidObjectId} = require("mongoose");
 const postModel = require("./../../models/Post.model");
 const likeModel = require("../../models/Like.model");
+const saveModel = require("../../models/Save.model");
 const hasAccessToPage = require("./../../utils/hasAccessToPage.util")
 
 exports.showPostUploadView = (req, res) => {
@@ -116,7 +117,47 @@ exports.dislike = async (req, res, next) => {
 
 exports.save = async (req, res, next) => {
     try {
-        res.send("ok");
+        const user = req.user;
+        const {postID} = req.body;
+
+        const isValidPostID = isValidObjectId(postID);
+
+        if (!isValidPostID) {
+            req.flash("error", "Post ID is not valid!");
+            return res.redirect("back");
+        }
+
+        const post = await postModel.findOne({
+            _id: postID,
+        });
+
+        if (!post) {
+            req.flash("error", "Post not found valid!");
+            return res.redirect("back");
+        }
+
+        const hasAccess = await hasAccessToPage(user._id, post.user);
+
+        if (!hasAccess) {
+            req.flash("error", "your not access this post!");
+            return res.redirect("back");
+        }
+
+        const isExistingSave = await saveModel.findOne({
+            post: postID,
+            user: user._id,
+        });
+
+        if (isExistingSave) {
+            return res.redirect(`/page/${post.user}`);
+        }
+
+        await saveModel.create({
+            post: postID,
+            user: user._id,
+        });
+
+        res.redirect(`/page/${post.user}`);
 
     } catch (err) {
         next(err);
