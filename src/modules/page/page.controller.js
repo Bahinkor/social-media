@@ -74,8 +74,6 @@ exports.getPage = async (req, res, next) => {
             ...post,
             hasLike: likedPostIds.has(post._id.toString())
         }));
-        console.log("like ids =>", likedPostIds);
-        console.log("post with like =>", postWithLike);
 
         const isOwn = user._id.equals(pageID);
 

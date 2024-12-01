@@ -113,3 +113,21 @@ exports.dislike = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.save = async (req, res, next) => {
+    try {
+        res.send("ok");
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.unsave = async (req, res, next) => {
+    try {
+        res.send("no");
+
+    } catch (err) {
+        next(err);
+    }
+};

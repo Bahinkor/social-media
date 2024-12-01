@@ -19,4 +19,10 @@ postRouter.route("/like")
 postRouter.route("/dislike")
     .post(authMiddleware, postController.dislike);
 
+postRouter.route("/save")
+    .post(authMiddleware, postController.save);
+
+postRouter.route("/unsave")
+    .post(authMiddleware, postController.unsave);
+
 module.exports = postRouter;
