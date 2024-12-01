@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const homeRouter = require("./modules/home/home.routes");
 const authRoutes = require("./modules/auth/auth.routes");
 const postRoutes = require("./modules/post/post.routes");
 const pageRoutes = require("./modules/page/page.routes");
@@ -51,10 +52,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 // * routes
-app.get("/", (req, res) => {
-    res.render("index");
-});
-
+app.use("/", homeRouter);
 app.use("/auth", authRoutes);
 app.use("/post", postRoutes);
 app.use("/page", pageRoutes);

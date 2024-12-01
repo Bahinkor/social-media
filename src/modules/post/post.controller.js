@@ -187,3 +187,12 @@ exports.unsave = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.showSaveView = async (req, res, next) => {
+    try {
+        res.render("post/save");
+
+    } catch (err) {
+        next(err);
+    }
+};

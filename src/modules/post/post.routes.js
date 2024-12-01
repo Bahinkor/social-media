@@ -25,4 +25,7 @@ postRouter.route("/save")
 postRouter.route("/unsave")
     .post(authMiddleware, postController.unsave);
 
+postRouter.route("/save")
+    .get(authMiddleware, postController.showSaveView);
+
 module.exports = postRouter;
