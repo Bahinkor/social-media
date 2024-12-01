@@ -176,12 +176,12 @@ exports.unsave = async (req, res, next) => {
             return res.redirect("back");
         }
 
-        await saveModel.findOneAndDelete({
+        const removedSave = await saveModel.findOneAndDelete({
             post: postID,
             user: user._id,
-        });
+        }).populate("post", "user").lean();
 
-        res.redirect(`/page/${user._id}`);
+        res.redirect(`/page/${removedSave.post.user}`);
 
     } catch (err) {
         next(err);

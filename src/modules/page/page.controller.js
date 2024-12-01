@@ -3,6 +3,7 @@ const followModel = require("./../../models/Follow.model");
 const userModel = require("./../../models/User.model");
 const postModel = require("./../../models/Post.model");
 const likeModel = require("./../../models/Like.model");
+const saveModel = require("./../../models/Save.model");
 const hasAccessToPage = require("../../utils/hasAccessToPage.util");
 
 exports.getPage = async (req, res, next) => {
@@ -69,10 +70,17 @@ exports.getPage = async (req, res, next) => {
             user: user._id,
         }).populate("user", "_id").populate("post", "_id").lean();
 
+        const saves = await saveModel.find({
+            user: user._id,
+        }).populate("user", "_id").populate("post", "_id").lean();
+
         const likedPostIds = new Set(likes.map(like => like.post._id.toString()));
+        const savedPostIds = new Set(saves.map(save => save.post._id.toString()));
+
         const postWithLike = posts.map(post => ({
             ...post,
-            hasLike: likedPostIds.has(post._id.toString())
+            hasLike: likedPostIds.has(post._id.toString()),
+            hasSave: savedPostIds.has(post._id.toString()),
         }));
 
         const isOwn = user._id.equals(pageID);
