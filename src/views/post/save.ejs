@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>nokoSocial | Bookmarks</title>
-    <link rel="stylesheet" href="/css/index.css" />
-    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/index.css"/>
+    <link rel="stylesheet" href="/css/styles.css"/>
 </head>
 
 <body>
@@ -52,9 +52,11 @@
                         class="w-full h-full bg-transparent border-none"
                 >
                     <% if (user.profilePicture) { %>
-                        <img src="http://localhost:8000/<%= user.profilePicture %>" class="profile-pic" alt="profile picture" style="width: 48px; height: 48px">
+                        <img src="http://localhost:8000/<%= user.profilePicture %>" class="profile-pic"
+                             alt="profile picture" style="width: 48px; height: 48px">
                     <% } else { %>
-                        <img src="/images/default-profile.jpg" class="profile-pic" alt="profile picture" style="width: 48px; height: 48px">
+                        <img src="/images/default-profile.jpg" class="profile-pic" alt="profile picture"
+                             style="width: 48px; height: 48px">
                     <% } %>
                 </a>
             </div>
@@ -75,11 +77,11 @@
                             alt="<%= user.name %>"
                     />
                 <% } else { %>
-                        <img
-                                src="/images/default-profile.jpg"
-                                class="w-12 h-12 rounded-full"
-                                alt="profile picture"
-                        />
+                    <img
+                            src="http://localhost:8000/images/default-profile.jpg"
+                            class="w-12 h-12 rounded-full"
+                            alt="profile picture"
+                    />
                 <% } %>
             </div>
             <div>
@@ -273,9 +275,9 @@
 
         <!-- Create a post -->
         <a href="/post">
-        <button class="h-10 rounded-2xl flex-center text-white bg-indigo-700">
-            Create post
-        </button>
+            <button class="h-10 rounded-2xl flex-center text-white bg-indigo-700">
+                Create post
+            </button>
         </a>
     </aside>
 
@@ -286,24 +288,30 @@
                 <!-- Feed header -->
                 <header>
                     <a
-                            href="/src/Pages/Profiles/Hosna/index.html"
+                            href="/page/<%= item.post.user._id %>"
                             class="flex items-center gap-3"
                     >
                         <div>
-                            <img
-                                    src="/images/profile-1.jpg"
-                                    alt="Profile card"
-                                    class="w-8 rounded-full"
-                            />
+                            <% if (item.post.user.profilePicture) { %>
+                                <img
+                                        src="http://localhost:8000/<%= item.post.user.profilePicture %>"
+                                        alt="Profile card"
+                                        class="w-8 rounded-full"
+                                />
+                            <% } else { %>
+                                <img
+                                        src="http://localhost:8000/images/default-profile.jpg"
+                                        alt="Profile card"
+                                        class="w-8 rounded-full"
+                                />
+                            <% } %>
                         </div>
                         <div>
                             <p class="font-Poppins-Medium text-sm twitter-name">
-                                Lena Mc'Queen
+                                <%= item.post.user.name %>
                             </p>
                             <p class="tweet-time">
-                                <span>Dubai</span>
-                                ,
-                                <span>6 Minutes Ago</span>
+                                <%= item.post.user.username %>
                             </p>
                         </div>
                     </a>
@@ -348,7 +356,7 @@
                                         </svg>
                                     </button>
                                 </form>
-                            <% } else {%>
+                            <% } else { %>
                                 <form action="/post/like" method="post">
                                     <input
                                             type="hidden"
@@ -431,7 +439,7 @@
                     <div class="mt-1 flex items-center relative">
                         <div class="liked-by-wrapper relative block">
                 <span>
-                  <img src="./images/profile-5.jpg" class="likedBy" alt="" />
+                  <img src="./images/profile-5.jpg" class="likedBy" alt=""/>
                 </span>
                             <span>
                   <img
@@ -451,9 +459,9 @@
                         <div class="text-sm">
                             <span> Liked by </span>
                             <span>
-                  <strong> rad_front </strong>
+                  <strong>  </strong>
                 </span>
-                            <span> and </span>
+                            <span> </span>
                             <span>
                   <strong> 2,923 others </strong>
                 </span>
@@ -463,7 +471,7 @@
                     <!-- User Infos (name, description) -->
                     <div class="mt-1 text-sm gap-1">
               <span>
-                <strong> Lena Mc'Queen </strong>
+                <strong> <%= item.post.user.name %> </strong>
               </span>
                         <p class="text-gray-700">
                             <%= item.post.description %>
@@ -478,7 +486,8 @@
                     </div>
                 </footer>
             </article>
-        <% }) %> <% } %>
+        <% }) %>
+        <% } %>
     </section>
 
     <section id="bookmark-content"></section>
