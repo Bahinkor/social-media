@@ -2,7 +2,8 @@ const {isValidObjectId} = require("mongoose");
 const postModel = require("./../../models/Post.model");
 const likeModel = require("../../models/Like.model");
 const saveModel = require("../../models/Save.model");
-const hasAccessToPage = require("./../../utils/hasAccessToPage.util")
+const hasAccessToPage = require("./../../utils/hasAccessToPage.util");
+const {getUserInfo} = require("./../../utils/helper");
 
 exports.showPostUploadView = (req, res) => {
     res.render("post/upload");
@@ -207,8 +208,11 @@ exports.showSaveView = async (req, res, next) => {
             hasLike: likePostIds.has(save.post._id.toString()),
         }));
 
+        const userInfo = await getUserInfo(user._id);
+
         res.render("post/save", {
             posts: savesWithLike,
+            user: userInfo,
         });
 
     } catch (err) {

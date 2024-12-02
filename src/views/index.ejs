@@ -41,21 +41,22 @@
         <div class="flex gap-6 items-center">
             <a
                     class="create-button bg-indigo-600"
-                    href="/src/Pages/PostUpload/index.html"
+                    href="/post"
             >
                 Create
             </a>
             <div class="w-12 h-12 rounded-full overflow-hidden rounded-full">
-                <button
+                <a
+                        href="/page/<%= user._id %>"
                         id="profileButton"
                         class="w-full h-full bg-transparent border-none"
                 >
-                    <img
-                            src="/images/profile-8.jpg"
-                            class="object-cover"
-                            alt="profile cover"
-                    />
-                </button>
+                    <% if (user.profilePicture) { %>
+                        <img src="http://localhost:8000/<%= user.profilePicture %>" class="profile-pic" alt="profile picture" style="width: 48px; height: 48px">
+                    <% } else { %>
+                        <img src="/images/default-profile.jpg" class="profile-pic" alt="profile picture" style="width: 48px; height: 48px">
+                    <% } %>
+                </a>
             </div>
         </div>
     </nav>
@@ -68,19 +69,27 @@
         <!-- Profile Card -->
         <article class="profile-card shadow px-4">
             <div>
-                <img
-                        src="/images/profile-8.jpg"
-                        class="w-12 h-12 rounded-full"
-                        alt="Peyman Ahmadi"
-                />
+                <% if (user.profilePicture) { %>
+                    <img
+                            src="http://localhost:8000/<%= user.profilePicture %>"
+                            class="w-12 h-12 rounded-full"
+                            alt="<%= user.name %>"
+                    />
+                <% } else { %>
+                    <img
+                            src="/images/default-profile.jpg"
+                            class="w-12 h-12 rounded-full"
+                            alt="profile picture"
+                    />
+                <% } %>
             </div>
             <div>
                 <p
                         class="user-profile-name text-gray-900 font-Poppins-Bold text-sm"
                 >
-                    Peyman Ahmadi
+                    <%= user.name %>
                 </p>
-                <p class="font-Poppins-Light text-xs text-gray-500">@peyman2dev</p>
+                <p class="font-Poppins-Light text-xs text-gray-500">@<%= user.username %></p>
             </div>
         </article>
 
