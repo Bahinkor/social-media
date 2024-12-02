@@ -384,9 +384,9 @@ main {
 /* Bookmark */
 #bookmarks-container {
     width: 70%;
-    display: grid;
-    grid-template-columns: repeat(4, 227px);
-    grid-template-rows: repeat(4, 360px);
+    /*display: grid;*/
+    /*grid-template-columns: repeat(4, 227px);*/
+    /*grid-template-rows: repeat(4, 360px);*/
 }
 
 .reels {

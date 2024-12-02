@@ -190,7 +190,26 @@ exports.unsave = async (req, res, next) => {
 
 exports.showSaveView = async (req, res, next) => {
     try {
-        res.render("post/save");
+        const user = req.user;
+
+        const saves = await saveModel.find({
+            user: user._id,
+        }).populate("post").lean();
+
+        const likes = await likeModel.find({
+            user: user._id,
+        }).populate("post").lean();
+
+        const likePostIds = new Set(likes.map(like => like.post._id.toString()));
+
+        const savesWithLike = saves.map(save => ({
+            ...save,
+            hasLike: likePostIds.has(save.post._id.toString()),
+        }));
+
+        res.render("post/save", {
+            posts: savesWithLike,
+        });
 
     } catch (err) {
         next(err);
