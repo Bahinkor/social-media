@@ -28,4 +28,7 @@ postRouter.route("/unsave")
 postRouter.route("/save")
     .get(authMiddleware, postController.showSaveView);
 
+postRouter.route("/:postID/remove")
+    .post(authMiddleware, postController.removePost);
+
 module.exports = postRouter;

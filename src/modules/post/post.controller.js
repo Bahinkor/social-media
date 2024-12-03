@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const {isValidObjectId} = require("mongoose");
 const postModel = require("./../../models/Post.model");
 const likeModel = require("../../models/Like.model");
@@ -221,6 +223,66 @@ exports.showSaveView = async (req, res, next) => {
             posts: savesWithLike,
             user: userInfo,
         });
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.removePost = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const {postID} = req.params;
+
+        const isValidPostID = isValidObjectId(postID);
+
+        if (!isValidPostID) {
+            req.flash("error", "Post ID is not valid!");
+            return res.redirect("back");
+        }
+
+        const post = await postModel.findOne({
+            _id: postID,
+        });
+
+        if (!post || !post.user.equals(user._id)) {
+            req.flash("error", "you dont remove this post!");
+            return res.redirect("back");
+        }
+
+        await postModel.findOneAndDelete({
+            _id: postID,
+        });
+
+        await likeModel.deleteMany({
+            post: postID,
+        });
+
+        await saveModel.deleteMany({
+            post: postID,
+        });
+
+        // await commentModel.deleteMany({
+        //     post: postID,
+        // });
+
+        const mediaPath = path.join(
+            __dirname,
+            "..",
+            "..",
+            "..",
+            "public",
+            "images",
+            "posts",
+            post.media.filename,
+        );
+
+        fs.unlinkSync(mediaPath, err => {
+            if (err) next(err);
+        });
+
+        req.flash("success", "Post removed successfully.");
+        res.redirect(`/page/${user._id}`);
 
     } catch (err) {
         next(err);

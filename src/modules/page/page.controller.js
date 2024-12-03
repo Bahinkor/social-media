@@ -34,6 +34,8 @@ exports.getPage = async (req, res, next) => {
             return res.redirect("/");
         }
 
+        const isOwn = user._id.equals(pageID);
+
         if (!hasAccess) {
             req.flash("error", "please follow page to show content.");
             return res.render("page/index", {
@@ -43,6 +45,8 @@ exports.getPage = async (req, res, next) => {
                 followings: false,
                 page,
                 posts: false,
+                isOwn,
+                hasAccess,
             });
         }
 
@@ -83,8 +87,6 @@ exports.getPage = async (req, res, next) => {
             hasSave: savedPostIds.has(post._id.toString()),
         }));
 
-        const isOwn = user._id.equals(pageID);
-
         res.render("page/index", {
             followed: Boolean(isFollowed),
             pageID,
@@ -93,6 +95,7 @@ exports.getPage = async (req, res, next) => {
             page,
             posts: postWithLike,
             isOwn,
+            hasAccess,
         });
 
     } catch (err) {
