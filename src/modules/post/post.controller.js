@@ -4,6 +4,7 @@ const {isValidObjectId} = require("mongoose");
 const postModel = require("./../../models/Post.model");
 const likeModel = require("../../models/Like.model");
 const saveModel = require("../../models/Save.model");
+const commentModel = require("../../models/Comment.model");
 const hasAccessToPage = require("./../../utils/hasAccessToPage.util");
 const {getUserInfo} = require("./../../utils/helper");
 
@@ -283,6 +284,49 @@ exports.removePost = async (req, res, next) => {
 
         req.flash("success", "Post removed successfully.");
         res.redirect(`/page/${user._id}`);
+
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.newComment = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const {content, parent, postID} = req.body;
+
+        // TODO: isVerified
+        // if (!user.isVerified) {
+        //     req.flash("error", "You account not verified!");
+        //     return res.redirect("back");
+        // }
+
+        const isValidPostID = isValidObjectId(postID);
+
+        if (!isValidPostID) {
+            req.flash("error", "Post ID is not valid!");
+            return res.redirect("back");
+        }
+
+        const post = await postModel.findOne({
+            _id: postID,
+        });
+
+        if (!post) {
+            req.flash("error", "this post not found!");
+            return res.redirect("back");
+        }
+
+        // TODO: parent
+
+        await commentModel.create({
+            post: postID,
+            user: user._id,
+            content,
+        });
+
+        req.flash("success", "Comment send successfully.");
+        res.redirect(`/page/${post.user}`);
 
     } catch (err) {
         next(err);

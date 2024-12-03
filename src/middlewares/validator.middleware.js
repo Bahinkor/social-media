@@ -10,7 +10,7 @@ const validatorMiddleware = schema => {
             if (err.isJoi) return res.status(422).json(err.details);
 
             res.status(500).json({
-                message: err.message || "internal server error.",
+                message: err.message || err.msg || "internal server error.",
             });
         }
     };

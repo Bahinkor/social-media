@@ -17,7 +17,7 @@ const schema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-});
+}, {timestamps: true});
 
 const model = mongoose.models.Post || mongoose.model("Post", schema);
 

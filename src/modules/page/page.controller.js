@@ -4,6 +4,7 @@ const userModel = require("./../../models/User.model");
 const postModel = require("./../../models/Post.model");
 const likeModel = require("./../../models/Like.model");
 const saveModel = require("./../../models/Save.model");
+const commentModel = require("./../../models/Comment.model");
 const hasAccessToPage = require("../../utils/hasAccessToPage.util");
 
 exports.getPage = async (req, res, next) => {

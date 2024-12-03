@@ -9,6 +9,17 @@ const createPostValidationSchema = joi.object({
         .min(0),
 });
 
+const createCommentValidationSchema = joi.object({
+    postID: joi.string()
+        .required(),
+    content: joi.string()
+        .min(1)
+        .max(3000)
+        .required(),
+    parent: joi.string(),
+});
+
 module.exports = {
-    createPostValidationSchema
+    createPostValidationSchema,
+    createCommentValidationSchema,
 };

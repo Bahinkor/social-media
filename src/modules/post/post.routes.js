@@ -1,7 +1,7 @@
 const express = require("express");
 const postController = require("./post.controller");
 const validationMiddleware = require("./../../middlewares/validator.middleware")
-const {createPostValidationSchema} = require("./post.validator");
+const {createPostValidationSchema, createCommentValidationSchema} = require("./post.validator");
 const authMiddleware = require("./../../middlewares/auth.middleware");
 const accountVerifyMiddleware = require("./../../middlewares/accountVerify.middleware");
 const {multerStorage} = require("./../../middlewares/uploaderConfigs");
@@ -30,5 +30,8 @@ postRouter.route("/save")
 
 postRouter.route("/:postID/remove")
     .post(authMiddleware, postController.removePost);
+
+postRouter.route("/new-comment")
+    .post(authMiddleware, validationMiddleware(createCommentValidationSchema), postController.newComment);
 
 module.exports = postRouter;

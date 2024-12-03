@@ -849,7 +849,7 @@
                     <p class="text-sm text-gray-700">
                         Add a comment:
                     </p>
-                    <form id="comment-form">
+                    <form id="comment-form" method="post" action="/post/new-comment">
                         <div class="mt-2">
                             <textarea name="content" class="w-full  bg-gray-100 p-5 rounded-lg font-light" placeholder="Write something to share ..."></textarea>
                         </div>
@@ -866,6 +866,8 @@
                     <p class="text-sm text-gray-600 my-3">
                         Comments</p>
                 </div>
+
+                <%%>
 
                 <div class="border bg-gray-100 p-5 my-3 rounded-md shadow-sm">
                     <div class="flex items-center gap-2 mb-1">
