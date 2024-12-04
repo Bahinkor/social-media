@@ -128,3 +128,53 @@ exports.login = async (req, res) => {
         res.redirect("/auth/login");
     }
 };
+
+exports.refreshToken = async (req, res, next) => {
+    try {
+        const {refreshToken} = req.body;
+
+        const userID = await refreshTokenModel.verifyToken(refreshToken);
+
+        if (!userID) {
+            return res.status(400).json({
+                message: "Refresh token not valid!"
+            });
+        }
+
+        await refreshTokenModel.findOneAndDelete({
+            token: refreshToken,
+        });
+
+        const user = userModel.findOne({
+            _id: userID
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User is not found!"
+            });
+        }
+
+        const accessToken = jwt.sign({userID: user._id}, process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: "30day"
+        });
+
+        const newRefreshToken = await refreshTokenModel.createToken(user);
+
+        // access & refresh token set cookie
+        res.cookie("access-token", accessToken, {
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+            httpOnly: true,
+            path: "/",
+        });
+
+        res.cookie("refresh-token", newRefreshToken, {
+            maxAge: 1000 * 60 * 60 * 24 * 30,
+            httpOnly: true,
+            path: "/",
+        });
+
+    } catch (err) {
+        next(err);
+    }
+};

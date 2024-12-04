@@ -13,4 +13,7 @@ authRouter.route("/login")
     .get(authController.showLoginView)
     .post(validatorMiddleware(loginValidationSchema), authController.login);
 
+authRouter.route("/refresh")
+    .put(authController.refreshToken);
+
 module.exports = authRouter;
