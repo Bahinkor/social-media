@@ -1,1 +1,62 @@
-{}
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Social Media",
+    "description": "A social media project with expressJs framework and mongoDB database and ejs template engine.",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "All routes about user auth."
+    },
+    {
+      "name": "Page",
+      "description": "All routes about pages."
+    },
+    {
+      "name": "Past",
+      "description": "All routes about posts."
+    },
+    {
+      "name": "User",
+      "description": "All routes about users."
+    }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User register api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "name": "Reza Bahinkor",
+                  "username": "bahinkor",
+                  "email": "bahinkor@example.com",
+                  "password": "123456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "register successfully."
+          },
+          "422": {
+            "description": "request body is not valid!"
+          },
+          "500": {
+            "description": "internal server error!"
+          }
+        }
+      }
+    }
+  }
+}
