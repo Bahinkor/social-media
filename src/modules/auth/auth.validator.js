@@ -31,7 +31,14 @@ const loginValidationSchema = joi.object({
         .required(),
 });
 
+const forgetPasswordValidationSchema = joi.object({
+    email: joi.string()
+        .email()
+        .required(),
+});
+
 module.exports = {
     registerValidationSchema,
     loginValidationSchema,
+    forgetPasswordValidationSchema,
 };

@@ -1,7 +1,11 @@
 const express = require("express");
 const authController = require("./auth.controller");
 const validatorMiddleware = require("./../../middlewares/validator.middleware");
-const {registerValidationSchema, loginValidationSchema} = require("./auth.validator");
+const {
+    registerValidationSchema,
+    loginValidationSchema,
+    forgetPasswordValidationSchema
+} = require("./auth.validator");
 
 const authRouter = express.Router();
 
@@ -18,7 +22,7 @@ authRouter.route("/refresh")
 
 authRouter.route("/forget-password")
     .get(authController.showForgetPasswordView)
-    .post(authController.forgetPassword);
+    .post(validatorMiddleware(forgetPasswordValidationSchema), authController.forgetPassword);
 
 authRouter.route("/reset-password/:token")
     .get(authController.showResetPasswordView);

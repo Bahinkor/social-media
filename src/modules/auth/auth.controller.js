@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const userModel = require("./../../models/User.model");
 const refreshTokenModel = require("../../models/RefreshToken.model");
+const resetPasswordModel = require("../../models/ResetPassword.model");
+const {transporter} = require("./../../config/nodemailer")
 
 exports.showRegisterView = (req, res) => {
     res.render("auth/register");
@@ -183,8 +186,43 @@ exports.showForgetPasswordView = (req, res) => {
     res.render("auth/forget-password");
 };
 
-exports.forgetPassword = (req, res, next) => {
+exports.forgetPassword = async (req, res, next) => {
     try {
+        const {email} = req.body;
+
+        const user = await userModel.findOne({
+            email,
+        });
+
+        if (!user) {
+            req.flash("error", "Email is not valid!");
+            return res.redirect("/auth/forget-password");
+        }
+
+        const resetToken = crypto.randomBytes(16).toString("hex");
+
+        const resetTokenExpireTime = Date.now() + 1000 * 60 * 10;
+
+        await resetPasswordModel.create({
+            user: user._id,
+            token: resetToken,
+            tokenExpireTime: resetTokenExpireTime,
+        });
+
+        const mailOptions = {
+            from: process.env.EMAIL,
+            to: email,
+            subject: "Reset Password Link",
+            html: `
+<h2>Hi, ${user.name}</h2>
+            <a href="http://localhost:${process.env.PORT}/auth/reset-password/${resetToken}">Reset Password Link</a>
+            `,
+        };
+
+        transporter.sendMail(mailOptions);
+
+        req.flash("success", "Email sent successfully.");
+        res.redirect("/auth/forget-password");
 
     } catch (err) {
         next(err);
