@@ -16,4 +16,14 @@ authRouter.route("/login")
 authRouter.route("/refresh")
     .put(authController.refreshToken);
 
+authRouter.route("/forget-password")
+    .get(authController.showForgetPasswordView)
+    .post(authController.forgetPassword);
+
+authRouter.route("/reset-password/:token")
+    .get(authController.showResetPasswordView);
+
+authRouter.route("/reset-password")
+    .post(authController.resetPassword);
+
 module.exports = authRouter;
