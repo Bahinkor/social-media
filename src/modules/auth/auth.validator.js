@@ -37,8 +37,16 @@ const forgetPasswordValidationSchema = joi.object({
         .required(),
 });
 
+const resetPasswordValidationSchema = joi.object({
+    token: joi.string()
+        .required(),
+    password: joi.string()
+        .min(6),
+});
+
 module.exports = {
     registerValidationSchema,
     loginValidationSchema,
     forgetPasswordValidationSchema,
+    resetPasswordValidationSchema,
 };

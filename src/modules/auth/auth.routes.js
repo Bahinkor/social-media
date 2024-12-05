@@ -4,7 +4,8 @@ const validatorMiddleware = require("./../../middlewares/validator.middleware");
 const {
     registerValidationSchema,
     loginValidationSchema,
-    forgetPasswordValidationSchema
+    forgetPasswordValidationSchema,
+    resetPasswordValidationSchema
 } = require("./auth.validator");
 
 const authRouter = express.Router();
@@ -28,6 +29,6 @@ authRouter.route("/reset-password/:token")
     .get(authController.showResetPasswordView);
 
 authRouter.route("/reset-password")
-    .post(authController.resetPassword);
+    .post(validatorMiddleware(resetPasswordValidationSchema), authController.resetPassword);
 
 module.exports = authRouter;

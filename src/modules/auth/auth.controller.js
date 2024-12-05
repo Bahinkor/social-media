@@ -233,8 +233,44 @@ exports.showResetPasswordView = (req, res) => {
     res.render("auth/reset-password");
 };
 
-exports.resetPassword = (req, res, next) => {
+exports.resetPassword = async (req, res, next) => {
     try {
+        const {token, password} = req.body;
+
+        const resetPassword = await resetPasswordModel.findOne({
+            token,
+            tokenExpireTime: {
+                $gt: Date.now(),
+            }
+        });
+
+        if (!resetPassword) {
+            req.flash("error", "invalid or expired token!");
+            return res.redirect("/auth/forget-password");
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        const user = await userModel.findOneAndUpdate(
+            {
+                _id: resetPassword.user,
+            },
+            {
+                password: hashedPassword,
+            }
+        );
+
+        if (!user) {
+            req.flash("error", "user not found!");
+            return res.redirect("/auth/forget-password");
+        }
+
+        await resetPasswordModel.findOneAndDelete({
+            token,
+        });
+
+        req.flash("success", "Reset password successfully.");
+        res.redirect("/auth/login");
 
     } catch (err) {
         next(err);
