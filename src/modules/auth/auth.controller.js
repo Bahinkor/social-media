@@ -6,11 +6,7 @@ const refreshTokenModel = require("../../models/RefreshToken.model");
 const resetPasswordModel = require("../../models/ResetPassword.model");
 const {transporter} = require("./../../config/nodemailer")
 
-exports.showRegisterView = (req, res) => {
-    res.render("auth/register");
-};
-
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
     try {
         const {
             email,
@@ -24,12 +20,9 @@ exports.register = async (req, res) => {
         });
 
         if (isUserExist) {
-            req.flash("error", "User already exists!");
-            return res.redirect("/auth/register");
-
-            // return res.status(400).json({
-            //     message: "User already exists!",
-            // });
+            return res.status(422).json({
+                message: "User already exists!",
+            });
         }
 
         const usersCount = await userModel.countDocuments({});
@@ -52,7 +45,6 @@ exports.register = async (req, res) => {
         // access & refresh token set cookie
         res.cookie("access-token", accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
             path: "/",
         });
 
@@ -62,44 +54,33 @@ exports.register = async (req, res) => {
             path: "/",
         });
 
-        req.flash("success", "User registered successfully.");
-        res.redirect("/auth/register");
-
-        // res.status(201).json({
-        //     message: "User created successfully",
-        // });
+        res.status(201).json({
+            message: "User created successfully",
+        });
 
     } catch (err) {
-        console.log(`auth, register controller failed. error: ${err}`);
-        req.flash("error", "Internal Server Error!");
-        res.redirect("/auth/redirect");
-
-        // res.status(500).json({
-        //     message: err.message || "Something went wrong.",
-        // });
+        next(err);
     }
 };
 
-exports.showLoginView = (req, res) => {
-    res.render("auth/login");
-};
-
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
     try {
         const {username, password} = req.body;
 
         const user = await userModel.findOne({username});
 
         if (!user) {
-            req.flash("error", "User is not found!");
-            return res.redirect("/auth/login");
+            return res.status(404).json({
+                message: "User is not found!",
+            });
         }
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
 
         if (!isPasswordMatch) {
-            req.flash("error", "username or password invalid!");
-            return res.redirect("/auth/login");
+            return res.status(401).json({
+                message: "username or password invalid!",
+            });
         }
 
         const accessToken = jwt.sign({userID: user._id}, process.env.ACCESS_TOKEN_SECRET, {
@@ -112,7 +93,6 @@ exports.login = async (req, res) => {
         // access & refresh token set cookie
         res.cookie("access-token", accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
             path: "/",
         });
 
@@ -122,13 +102,12 @@ exports.login = async (req, res) => {
             path: "/",
         });
 
-        req.flash("success", "User sign ind successfully.");
-        res.redirect("/auth/login");
+        res.json({
+            message: "User logged in successfully.",
+        });
 
     } catch (err) {
-        console.log(`auth, login controller failed. error: ${err}`);
-        req.flash("error", "Internal Server Error!");
-        res.redirect("/auth/login");
+        next(err);
     }
 };
 
@@ -167,7 +146,6 @@ exports.refreshToken = async (req, res, next) => {
         // access & refresh token set cookie
         res.cookie("access-token", accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
             path: "/",
         });
 
@@ -182,10 +160,6 @@ exports.refreshToken = async (req, res, next) => {
     }
 };
 
-exports.showForgetPasswordView = (req, res) => {
-    res.render("auth/forget-password");
-};
-
 exports.forgetPassword = async (req, res, next) => {
     try {
         const {email} = req.body;
@@ -195,8 +169,9 @@ exports.forgetPassword = async (req, res, next) => {
         });
 
         if (!user) {
-            req.flash("error", "Email is not valid!");
-            return res.redirect("/auth/forget-password");
+            return res.status(404).json({
+                message: "User email is not found!"
+            });
         }
 
         const resetToken = crypto.randomBytes(16).toString("hex");
@@ -209,6 +184,7 @@ exports.forgetPassword = async (req, res, next) => {
             tokenExpireTime: resetTokenExpireTime,
         });
 
+        // * mail options for nodemailer (send forget password email to user)
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
@@ -221,16 +197,13 @@ exports.forgetPassword = async (req, res, next) => {
 
         transporter.sendMail(mailOptions);
 
-        req.flash("success", "Email sent successfully.");
-        res.redirect("/auth/forget-password");
+        res.json({
+            message: "Email sent successfully.",
+        });
 
     } catch (err) {
         next(err);
     }
-};
-
-exports.showResetPasswordView = (req, res) => {
-    res.render("auth/reset-password");
 };
 
 exports.resetPassword = async (req, res, next) => {
@@ -245,8 +218,9 @@ exports.resetPassword = async (req, res, next) => {
         });
 
         if (!resetPassword) {
-            req.flash("error", "invalid or expired token!");
-            return res.redirect("/auth/forget-password");
+            return res.status(403).json({
+                message: "invalid or expired token!",
+            });
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
@@ -261,16 +235,18 @@ exports.resetPassword = async (req, res, next) => {
         );
 
         if (!user) {
-            req.flash("error", "user not found!");
-            return res.redirect("/auth/forget-password");
+            return res.status(404).json({
+                message: "User is not found!",
+            });
         }
 
         await resetPasswordModel.findOneAndDelete({
             token,
         });
 
-        req.flash("success", "Reset password successfully.");
-        res.redirect("/auth/login");
+        res.json({
+            message: "Reset password successfully.",
+        });
 
     } catch (err) {
         next(err);
