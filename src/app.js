@@ -10,7 +10,6 @@ const postRoutes = require("./modules/post/post.routes");
 const pageRoutes = require("./modules/page/page.routes");
 const userRoutes = require("./modules/user/user.routes");
 const apiDocRoutes = require("./modules/apiDoc/swagger.routes");
-const flash = require("express-flash");
 const session = require("express-session");
 
 const app = express();
@@ -26,10 +25,9 @@ app.use(helmet({
     },
 }));
 
-// express flash
-app.use(flash());
+// session
 app.use(session({
-    secret: "uhcuisuhdco45",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
 }));
@@ -44,14 +42,7 @@ app.use(morgan("dev"));
 
 // static folders
 app.use(express.static(path.join(__dirname, "..", "public")));
-app.use("/css", express.static(path.join(__dirname, "public/css")));
-app.use("/js", express.static(path.join(__dirname, "public/js")));
-app.use("/fonts", express.static(path.join(__dirname, "public/fonts")));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
-
-// template engine
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
 
 // * routes
 app.use("/", homeRouter);
