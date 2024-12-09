@@ -17,6 +17,6 @@ pageRouter.route("/:pageID/follow")
     .post(auth, pageController.follow);
 
 pageRouter.route("/:pageID/unfollow")
-    .post(auth, pageController.unfollow);
+    .delete(auth, pageController.unfollow);
 
 module.exports = pageRouter;
