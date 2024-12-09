@@ -3,16 +3,15 @@ const accountVerify = (req, res, next) => {
         const isVerified = req.user.isVerified;
 
         if (!isVerified) {
-            req.flash("verifyMessage", "You need to verify your account!");
-            return res.render("post/upload");
+            return res.status(403).send({
+                message: "You need to verify your account!",
+            });
         }
 
         next();
 
     } catch (err) {
-        console.log(`account verify middleware, error: ${err}`);
-        req.flash("error", "Internal Server Error!");
-        res.redirect("/post");
+        next(err);
     }
 };
 

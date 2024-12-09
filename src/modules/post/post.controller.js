@@ -8,11 +8,7 @@ const commentModel = require("../../models/Comment.model");
 const hasAccessToPage = require("./../../utils/hasAccessToPage.util");
 const {getUserInfo} = require("./../../utils/helper");
 
-exports.showPostUploadView = (req, res) => {
-    res.render("post/upload");
-};
-
-exports.createPost = async (req, res) => {
+exports.createPost = async (req, res, next) => {
     try {
         const {description, hashtags} = req.body;
         const user = req.user;
@@ -20,8 +16,9 @@ exports.createPost = async (req, res) => {
         const hashtagsArray = hashtags.split(",");
 
         if (!req.file) {
-            req.flash("error", "media is required.");
-            return res.render("post/upload");
+            return res.status(422).json({
+                message: "Media is required."
+            });
         }
 
         const mediaUrlPath = `images/posts/${req.file.filename}`;
@@ -36,13 +33,12 @@ exports.createPost = async (req, res) => {
             user: user._id,
         });
 
-        req.flash("success", "Post successfully uploaded.");
-        res.render("post/upload");
+        res.status(201).json({
+            message: "Post uploaded successfully.",
+        });
 
     } catch (err) {
-        console.log(`post, create post controller failed. error: ${err}`);
-        req.flash("error", "Internal Server Error!");
-        res.redirect("/post");
+        next(err);
     }
 };
 
@@ -54,8 +50,9 @@ exports.like = async (req, res, next) => {
         const isValidID = isValidObjectId(postID);
 
         if (!isValidID) {
-            req.flash("error", "Post ID is not valid!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Post ID is not valid!"
+            });
         }
 
         const post = await postModel.findOne({
@@ -63,15 +60,17 @@ exports.like = async (req, res, next) => {
         });
 
         if (!post) {
-            req.flash("error", "Post not found!");
-            return res.redirect("back");
+            return res.status(404).json({
+                message: "Post not found!"
+            });
         }
 
         const hasAccess = await hasAccessToPage(user._id, post.user);
 
         if (!hasAccess) {
-            req.flash("error", "your not access this post!");
-            return res.redirect("back");
+            return res.status(403).json({
+                message: "Your not access to this page!"
+            });
         }
 
         const isExistingLike = await likeModel.findOne({
@@ -80,7 +79,9 @@ exports.like = async (req, res, next) => {
         });
 
         if (isExistingLike) {
-            return res.redirect(`/page/${post.user}`);
+            return res.status(422).json({
+                message: "This post already liked!"
+            });
         }
 
         await likeModel.create({
@@ -88,7 +89,9 @@ exports.like = async (req, res, next) => {
             user: user._id,
         });
 
-        res.redirect(`/page/${post.user}`);
+        res.status(201).json({
+            message: "Like post successfully.",
+        });
 
     } catch (err) {
         next(err);
@@ -103,8 +106,9 @@ exports.dislike = async (req, res, next) => {
         const isValidPostID = isValidObjectId(postID);
 
         if (!isValidPostID) {
-            req.flash("error", "Post ID is not valid!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Post ID is not valid!",
+            });
         }
 
         await likeModel.findOneAndDelete({
@@ -112,7 +116,9 @@ exports.dislike = async (req, res, next) => {
             user: user._id,
         });
 
-        res.redirect(`/page/${user._id}`);
+        res.json({
+            message: "Unlike post successfully.",
+        });
 
     } catch (err) {
         next(err);
@@ -127,8 +133,9 @@ exports.save = async (req, res, next) => {
         const isValidPostID = isValidObjectId(postID);
 
         if (!isValidPostID) {
-            req.flash("error", "Post ID is not valid!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Post ID is not valid!",
+            });
         }
 
         const post = await postModel.findOne({
@@ -136,15 +143,17 @@ exports.save = async (req, res, next) => {
         });
 
         if (!post) {
-            req.flash("error", "Post not found valid!");
-            return res.redirect("back");
+            return res.status(404).json({
+                message: "Post is not found!",
+            });
         }
 
         const hasAccess = await hasAccessToPage(user._id, post.user);
 
         if (!hasAccess) {
-            req.flash("error", "your not access this post!");
-            return res.redirect("back");
+            return res.status(403).json({
+                message: "Your not access to this page!",
+            });
         }
 
         const isExistingSave = await saveModel.findOne({
@@ -153,7 +162,9 @@ exports.save = async (req, res, next) => {
         });
 
         if (isExistingSave) {
-            return res.redirect(`/page/${post.user}`);
+            return res.status(422).json({
+                message: "This post already saved!",
+            });
         }
 
         await saveModel.create({
@@ -161,7 +172,9 @@ exports.save = async (req, res, next) => {
             user: user._id,
         });
 
-        res.redirect(`/page/${post.user}`);
+        res.status(201).json({
+            message: "Post saved successfully.",
+        });
 
     } catch (err) {
         next(err);
@@ -176,23 +189,26 @@ exports.unsave = async (req, res, next) => {
         const isValidPostID = isValidObjectId(postID);
 
         if (!isValidPostID) {
-            req.flash("error", "Post ID is not valid!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Post ID is not valid!",
+            });
         }
 
-        const removedSave = await saveModel.findOneAndDelete({
+        await saveModel.findOneAndDelete({
             post: postID,
             user: user._id,
-        }).populate("post", "user").lean();
+        });
 
-        res.redirect(`/page/${removedSave.post.user}`);
+        res.json({
+            message: "Remove save successfully.",
+        });
 
     } catch (err) {
         next(err);
     }
 };
 
-exports.showSaveView = async (req, res, next) => {
+exports.getSavedPosts = async (req, res, next) => {
     try {
         const user = req.user;
 
@@ -220,7 +236,7 @@ exports.showSaveView = async (req, res, next) => {
 
         const userInfo = await getUserInfo(user._id);
 
-        res.render("post/save", {
+        res.json({
             posts: savesWithLike,
             user: userInfo,
         });
@@ -238,8 +254,9 @@ exports.removePost = async (req, res, next) => {
         const isValidPostID = isValidObjectId(postID);
 
         if (!isValidPostID) {
-            req.flash("error", "Post ID is not valid!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Post ID is not valid!",
+            });
         }
 
         const post = await postModel.findOne({
@@ -247,8 +264,9 @@ exports.removePost = async (req, res, next) => {
         });
 
         if (!post || !post.user.equals(user._id)) {
-            req.flash("error", "you dont remove this post!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Your dont remove this post.",
+            });
         }
 
         await postModel.findOneAndDelete({
@@ -263,9 +281,9 @@ exports.removePost = async (req, res, next) => {
             post: postID,
         });
 
-        // await commentModel.deleteMany({
-        //     post: postID,
-        // });
+        await commentModel.deleteMany({
+            post: postID,
+        });
 
         const mediaPath = path.join(
             __dirname,
@@ -282,8 +300,9 @@ exports.removePost = async (req, res, next) => {
             if (err) next(err);
         });
 
-        req.flash("success", "Post removed successfully.");
-        res.redirect(`/page/${user._id}`);
+        res.json({
+            message: "Post removed successfully.",
+        });
 
     } catch (err) {
         next(err);
@@ -304,8 +323,9 @@ exports.newComment = async (req, res, next) => {
         const isValidPostID = isValidObjectId(postID);
 
         if (!isValidPostID) {
-            req.flash("error", "Post ID is not valid!");
-            return res.redirect("back");
+            return res.status(422).json({
+                message: "Post ID is not valid!",
+            });
         }
 
         const post = await postModel.findOne({
@@ -313,8 +333,9 @@ exports.newComment = async (req, res, next) => {
         });
 
         if (!post) {
-            req.flash("error", "this post not found!");
-            return res.redirect("back");
+            return res.status(404).json({
+                message: "Post is not found!",
+            });
         }
 
         // TODO: parent
@@ -325,8 +346,9 @@ exports.newComment = async (req, res, next) => {
             content,
         });
 
-        req.flash("success", "Comment send successfully.");
-        res.redirect(`/page/${post.user}`);
+        res.status(201).json({
+            message: "Comment create successfully.",
+        });
 
     } catch (err) {
         next(err);
