@@ -1,11 +1,11 @@
 const {getUserInfo} = require("./../../utils/helper");
 
-exports.showViewHome = async (req, res, next) => {
+exports.getUserData = async (req, res, next) => {
     try {
         const userInfo = await getUserInfo(req.user._id);
 
-        res.render("index", {
-            user: userInfo
+        res.json({
+            user: userInfo,
         });
 
     } catch (err) {

@@ -5,6 +5,6 @@ const auth = require("./../../middlewares/auth.middleware");
 const homeRouter = express.Router();
 
 homeRouter.route("/")
-    .get(auth, homeController.showViewHome);
+    .get(auth, homeController.getUserData);
 
 module.exports = homeRouter;
