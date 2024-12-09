@@ -312,19 +312,20 @@ exports.removePost = async (req, res, next) => {
 exports.newComment = async (req, res, next) => {
     try {
         const user = req.user;
-        const {content, parent, postID} = req.body;
-
-        // TODO: isVerified
-        // if (!user.isVerified) {
-        //     req.flash("error", "You account not verified!");
-        //     return res.redirect("back");
-        // }
+        const {content, parentID, postID} = req.body;
 
         const isValidPostID = isValidObjectId(postID);
+        const isValidParentID = parentID ? isValidObjectId(parentID) : true;
 
         if (!isValidPostID) {
             return res.status(422).json({
                 message: "Post ID is not valid!",
+            });
+        }
+
+        if (!isValidParentID) {
+            return res.status(422).json({
+                message: "Parent ID is not valid!",
             });
         }
 
@@ -338,12 +339,25 @@ exports.newComment = async (req, res, next) => {
             });
         }
 
-        // TODO: parent
+        let parent = null;
+
+        if (parentID) {
+            parent = await commentModel.findOne({
+                _id: parentID,
+            });
+
+            if (!parent) {
+                return res.status(404).json({
+                    message: "Comment parent is not found!",
+                });
+            }
+        }
 
         await commentModel.create({
             post: postID,
             user: user._id,
             content,
+            parent: parentID || null,
         });
 
         res.status(201).json({

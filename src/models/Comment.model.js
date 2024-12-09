@@ -18,6 +18,7 @@ const schema = new mongoose.Schema({
     parent: {
         type: mongoose.Types.ObjectId,
         ref: "Comment",
+        default: null,
     },
 }, {timestamps: true});
 
