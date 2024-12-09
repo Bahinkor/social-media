@@ -1,13 +1,15 @@
 const userModel = require("./../../models/User.model");
 
-exports.showViewEditProfile = async (req, res, next) => {
+exports.getUserInfo = async (req, res, next) => {
     try {
-        const user = await userModel.findOne({
-            _id: req.user._id
+        const user = req.user;
+
+        const userInfo = await userModel.findOne({
+            _id: user._id,
         }, "-password");
 
-        res.render("user/edit", {
-            user,
+        res.json({
+            user: userInfo,
         });
 
     } catch (err) {
@@ -15,7 +17,7 @@ exports.showViewEditProfile = async (req, res, next) => {
     }
 };
 
-exports.editData = async (req, res, next) => {
+exports.editUserInfo = async (req, res, next) => {
     try {
         const {name, email, username} = req.body;
         const userID = req.user._id;
@@ -28,8 +30,9 @@ exports.editData = async (req, res, next) => {
         });
 
         if (isUsernameExists) {
-            req.flash("error", "Username already exists.");
-            return res.redirect("/user/edit-profile");
+            return res.status(409).json({
+                message: "Username already exist.",
+            });
         }
 
         const isEmailExists = await userModel.findOne({
@@ -40,8 +43,9 @@ exports.editData = async (req, res, next) => {
         });
 
         if (isEmailExists) {
-            req.flash("error", "Email already exists.");
-            return res.redirect("/user/edit-profile");
+            return res.status(409).json({
+                message: "Email already exist.",
+            });
         }
 
 
@@ -65,8 +69,9 @@ exports.editData = async (req, res, next) => {
             }
         );
 
-        req.flash("success", "User data saved successfully.");
-        res.redirect(`/page/${userID}`);
+        res.json({
+            message: "User info updated successfully.",
+        });
 
     } catch (err) {
         next(err);

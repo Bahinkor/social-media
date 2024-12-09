@@ -9,7 +9,7 @@ const userRouter = express.Router();
 const uploader = multerStorage("public/images/profiles");
 
 userRouter.route("/edit-profile")
-    .get(auth, userController.showViewEditProfile)
-    .post(auth, uploader.single("profilePicture"), validator(updateUserDataValidationSchema), userController.editData);
+    .get(auth, userController.getUserInfo)
+    .put(auth, uploader.single("profilePicture"), validator(updateUserDataValidationSchema), userController.editUserInfo);
 
 module.exports = userRouter;
