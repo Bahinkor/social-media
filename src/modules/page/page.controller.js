@@ -14,7 +14,7 @@ exports.getPageInfo = async (req, res, next) => {
         const isValidID = isValidObjectId(pageID);
 
         if (!isValidID) {
-            return res.status(401).json({
+            return res.status(422).json({
                 message: "Page ID is not valid!",
             });
         }
@@ -93,7 +93,7 @@ exports.getFollowers = async (req, res, next) => {
         const isValidID = isValidObjectId(pageID);
 
         if (!isValidID) {
-            return res.status(401).json({
+            return res.status(422).json({
                 message: "Page ID is not valid!",
             });
         }
@@ -130,7 +130,7 @@ exports.getFollowings = async (req, res, next) => {
         const isValidID = isValidObjectId(pageID);
 
         if (!isValidID) {
-            return res.status(401).json({
+            return res.status(422).json({
                 message: "Page ID is not valid!",
             });
         }

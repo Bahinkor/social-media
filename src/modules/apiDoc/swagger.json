@@ -11,6 +11,10 @@
       "description": "All routes about user auth."
     },
     {
+      "name": "Home",
+      "description": "All routes about home page."
+    },
+    {
       "name": "Page",
       "description": "All routes about pages."
     },
@@ -54,6 +58,270 @@
           },
           "500": {
             "description": "internal server error!"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "User login api",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "username": "bahinkor",
+                  "password": "123456"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "login successfully."
+          },
+          "422": {
+            "description": "request body is not valid!"
+          },
+          "500": {
+            "description": "internal server error!"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "put": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "refresh access token api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "refreshToken": "User refresh token."
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "access token refreshed successfully."
+          },
+          "422": {
+            "description": "request body is not valid!"
+          },
+          "500": {
+            "description": "internal server error!"
+          }
+        }
+      }
+    },
+    "/auth/forget-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Forget password api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "email": "bahinkor@example.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset password link send successfully."
+          },
+          "404": {
+            "description": "user not found!"
+          },
+          "500": {
+            "description": "internal server error!"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Reset password api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "password": "123456",
+                  "token": "url token"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset password successfully."
+          },
+          "404": {
+            "description": "user not found!"
+          },
+          "403": {
+            "description": "invalid or expired token!"
+          },
+          "500": {
+            "description": "internal server error!"
+          }
+        }
+      }
+    },
+    "/home": {
+      "get": {
+        "tags": [
+          "Home"
+        ],
+        "summary": "Get all info for user home page.",
+        "responses": {
+          "200": {
+            "description": "Get data successfully."
+          },
+          "500": {
+            "description": "internal server error!"
+          }
+        }
+      }
+    },
+    "/page/{pageID}": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Get page data api.",
+        "responses": {
+          "200": {
+            "description": "Get data successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/followers": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Get page followers data.",
+        "responses": {
+          "200": {
+            "description": "Get page followers successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "403": {
+            "description": "Not access this page!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/followings": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Get page followings data.",
+        "responses": {
+          "200": {
+            "description": "Get page followings successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "403": {
+            "description": "Not access this page!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/follow": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Follow page.",
+        "responses": {
+          "201": {
+            "description": "Follow page successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "400": {
+            "description": "You can not follow yourself OR Page already followed."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/unfollow": {
+      "delete": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Unfollow page.",
+        "responses": {
+          "200": {
+            "description": "Unfollow page successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
           }
         }
       }
