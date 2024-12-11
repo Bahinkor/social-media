@@ -19,7 +19,7 @@
       "description": "All routes about pages."
     },
     {
-      "name": "Past",
+      "name": "Post",
       "description": "All routes about posts."
     },
     {
@@ -495,9 +495,7 @@
             "description": "Internal server error!"
           }
         }
-      }
-    },
-    "/post/save": {
+      },
       "get": {
         "tags": [
           "Post"
@@ -658,9 +656,7 @@
             "description": "Internal server error!"
           }
         }
-      }
-    },
-    "/user/edit-profile": {
+      },
       "get": {
         "tags": [
           "User"
