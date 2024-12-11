@@ -6,15 +6,17 @@ const authMiddleware = async (req, res, next) => {
         const accessToken = req.cookies["access-token"];
 
         if (!accessToken) {
-            req.flash("error", "please login first.");
-            return res.redirect("/auth/login");
+            return res.status(401).json({
+                message: "User is not logged in.",
+            });
         }
 
         const payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
 
         if (!payload) {
-            req.flash("error", "please login first.");
-            return res.redirect("/auth/login");
+            return res.status(401).json({
+                message: "User is not logged in.",
+            });
         }
 
         const userID = payload.userID;
@@ -24,17 +26,16 @@ const authMiddleware = async (req, res, next) => {
         }).lean();
 
         if (!user) {
-            req.flash("error", "please login first.");
-            return res.redirect("/auth/login");
+            return res.status(401).json({
+                message: "User is not logged in.",
+            });
         }
 
         req.user = user;
         next();
 
     } catch (err) {
-        console.error(`auth middleware error: ${err}`);
-        req.flash("error", "please login first.");
-        res.redirect("/auth/login");
+        next(err);
     }
 };
 

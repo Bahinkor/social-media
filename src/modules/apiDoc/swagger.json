@@ -119,6 +119,9 @@
           "422": {
             "description": "request body is not valid!"
           },
+          "401": {
+            "description": "User is not auth."
+          },
           "500": {
             "description": "internal server error!"
           }
@@ -201,6 +204,9 @@
           "200": {
             "description": "Get data successfully."
           },
+          "401": {
+            "description": "User is not auth."
+          },
           "500": {
             "description": "internal server error!"
           }
@@ -220,6 +226,9 @@
           "404": {
             "description": "Page not found!"
           },
+          "401": {
+            "description": "User is not auth."
+          },
           "422": {
             "description": "Page ID is not valid!"
           },
@@ -238,6 +247,9 @@
         "responses": {
           "200": {
             "description": "Get page followers successfully."
+          },
+          "401": {
+            "description": "User is not auth."
           },
           "404": {
             "description": "Page not found!"
@@ -270,6 +282,9 @@
           "422": {
             "description": "Page ID is not valid!"
           },
+          "401": {
+            "description": "User is not auth."
+          },
           "403": {
             "description": "Not access this page!"
           },
@@ -295,6 +310,9 @@
           "422": {
             "description": "Page ID is not valid!"
           },
+          "401": {
+            "description": "User is not auth."
+          },
           "400": {
             "description": "You can not follow yourself OR Page already followed."
           },
@@ -317,8 +335,343 @@
           "404": {
             "description": "Page not found!"
           },
+          "401": {
+            "description": "User is not auth."
+          },
           "422": {
             "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Upload post api.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "media": "image",
+                  "description": "test desc",
+                  "hashtags": "js,web"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post upload successfully."
+          },
+          "422": {
+            "description": "Media is required."
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/like": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Like post api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postID": "postID"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Like post successfully."
+          },
+          "422": {
+            "description": "Post ID is not valid!"
+          },
+          "404": {
+            "description": "Post is not found!"
+          },
+          "403": {
+            "description": "User not access this page."
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/dislike": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Dislike post api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postID": "postID"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dislike post successfully."
+          },
+          "422": {
+            "description": "Post ID is not valid!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/save": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Save post api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postID": "postID"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Save post successfully."
+          },
+          "422": {
+            "description": "Post ID is not valid!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "404": {
+            "description": "Post is not found!"
+          },
+          "403": {
+            "description": "User not access this page."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/save": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Get saved posts api.",
+        "responses": {
+          "200": {
+            "description": "Get saved posts successfully."
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/unsave": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Unsave post api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postID": "postID"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Unsave post successfully."
+          },
+          "422": {
+            "description": "Post ID is not valid!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/{postID}/remove": {
+      "delete": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Remove post api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postID": "postID"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Remove post successfully."
+          },
+          "422": {
+            "description": "Post ID is not valid!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/post/new-comment": {
+      "post": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "New comment post api.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "postID": "postID",
+                  "content": "Hello World",
+                  "parentID": "In case of a reply"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "New comment created successfully."
+          },
+          "422": {
+            "description": "Post ID OR Parent ID is not valid!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/user/edit-profile": {
+      "put": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Edit user info api.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "profilePicture": "profile image",
+                  "name": "Reza Bahinkor",
+                  "email": "bahinkor@example.com",
+                  "username": "bahinkor"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile edit successfully."
+          },
+          "422": {
+            "description": "Post ID OR Parent ID is not valid!"
+          },
+          "409": {
+            "description": "Username OR Email already exist."
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/user/edit-profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user info api.",
+        "responses": {
+          "200": {
+            "description": "Get user info successfully."
+          },
+          "401": {
+            "description": "User is not auth."
           },
           "500": {
             "description": "Internal server error!"
