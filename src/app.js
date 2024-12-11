@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname, "..", "public")));
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 // * routes
-app.use("/", homeRouter);
+app.use("/home", homeRouter);
 app.use("/auth", authRoutes);
 app.use("/post", postRoutes);
 app.use("/page", pageRoutes);
