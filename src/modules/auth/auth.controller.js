@@ -191,7 +191,7 @@ exports.forgetPassword = async (req, res, next) => {
             subject: "Reset Password Link",
             html: `
 <h2>Hi, ${user.name}</h2>
-            <a href="http://localhost:${process.env.PORT}/auth/reset-password/${resetToken}">Reset Password Link</a>
+            <a href="${process.env.FRONT_URL}/auth/reset-password/${resetToken}">Reset Password Link</a>
             `,
         };
 
