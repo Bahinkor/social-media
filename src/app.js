@@ -15,7 +15,11 @@ const session = require("express-session");
 const app = express();
 
 // security policy middlewares
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONT_URL,
+    credentials: true,
+}));
+
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {

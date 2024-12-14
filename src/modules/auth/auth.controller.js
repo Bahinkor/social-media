@@ -45,7 +45,6 @@ exports.register = async (req, res, next) => {
         // access & refresh token set cookie
         res.cookie("access-token", accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
             path: "/",
         });
 
@@ -97,7 +96,6 @@ exports.login = async (req, res, next) => {
         // access & refresh token set cookie
         res.cookie("access-token", accessToken, {
             maxAge: 1000 * 60 * 60 * 24 * 30,
-            httpOnly: true,
             path: "/",
         });
 
