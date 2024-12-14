@@ -56,6 +56,10 @@ exports.register = async (req, res, next) => {
 
         res.status(201).json({
             message: "User created successfully",
+            data: {
+                id: user._id,
+                name: user.name,
+            },
         });
 
     } catch (err) {
@@ -104,6 +108,10 @@ exports.login = async (req, res, next) => {
 
         res.json({
             message: "User logged in successfully.",
+            data: {
+                id: user._id,
+                name: user.name,
+            },
         });
 
     } catch (err) {
