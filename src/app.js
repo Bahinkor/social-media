@@ -23,9 +23,13 @@ app.use(cors({
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            "script-src": ["'self'", "'unsafe-inline'", "https://unpkg.com"],
+            "script-src": ["'self'", "'unsafe-inline'"],
             "script-src-attr": ["'self'", "'unsafe-inline'"],
         },
+    },
+    crossOriginOpenerPolicy: false,
+    crossOriginResourcePolicy: {
+        policy: "cross-origin",
     },
 }));
 
