@@ -39,7 +39,7 @@ exports.getPageInfo = async (req, res, next) => {
         const isOwn = user._id.equals(pageID);
 
         if (!hasAccess) {
-            return res.status(403).json({
+            return res.status(200).json({
                 followed: Boolean(isFollowed),
                 pageID,
                 page,
