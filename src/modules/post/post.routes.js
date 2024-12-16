@@ -30,7 +30,7 @@ postRouter.route("/:postID/remove")
 postRouter.route("/new-comment")
     .post(authMiddleware, validationMiddleware(createCommentValidationSchema), postController.newComment);
 
-postRouter.route("/:postID/comments?p=pageID")
+postRouter.route("/:postID/comments")
     .get(authMiddleware, postController.getComments);
 
 module.exports = postRouter;

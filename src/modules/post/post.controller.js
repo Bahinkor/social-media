@@ -373,7 +373,7 @@ exports.getComments = async (req, res, next) => {
     try {
         const user = req.user;
         const {postID} = req.params;
-        const {pageID} = req.query;
+        const {p: pageID} = req.query;
 
         const isValidPageID = isValidObjectId(pageID);
 
@@ -401,7 +401,7 @@ exports.getComments = async (req, res, next) => {
 
         const comments = await commentModel.find({
             post: postID,
-        });
+        }).populate("user", "-password").lean();
 
         res.json(comments);
 
