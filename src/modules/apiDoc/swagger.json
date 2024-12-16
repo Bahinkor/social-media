@@ -674,6 +674,31 @@
           }
         }
       }
+    },
+    "/post/{postID}/comments?p={pageID}": {
+      "get": {
+        "tags": [
+          "Post"
+        ],
+        "summary": "Get post comments api.",
+        "responses": {
+          "200": {
+            "description": "Get comments successfully."
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "403": {
+            "description": "Not access this page."
+          },
+          "422": {
+            "description": "Page ID OR Post ID not valid!."
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
     }
   }
 }

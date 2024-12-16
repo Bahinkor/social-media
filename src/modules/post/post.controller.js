@@ -368,3 +368,44 @@ exports.newComment = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.getComments = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const {postID} = req.params;
+        const {pageID} = req.query;
+
+        const isValidPageID = isValidObjectId(pageID);
+
+        if (!isValidPageID) {
+            return res.status(422).json({
+                message: "Page ID is not valid!",
+            });
+        }
+
+        const hasAccess = await hasAccessToPage(user._id, pageID);
+
+        if (!hasAccess) {
+            return res.status(403).json({
+                message: "your not access this page.",
+            });
+        }
+
+        const isValidPostID = isValidObjectId(postID);
+
+        if (!isValidPostID) {
+            return res.status(422).json({
+                message: "Post ID is not valid!",
+            });
+        }
+
+        const comments = await commentModel.find({
+            post: postID,
+        });
+
+        res.json(comments);
+
+    } catch (err) {
+        next(err);
+    }
+};
