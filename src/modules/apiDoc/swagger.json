@@ -554,18 +554,6 @@
           "Post"
         ],
         "summary": "Remove post api.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "postID": "postID"
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Remove post successfully."
