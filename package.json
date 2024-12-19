@@ -35,5 +35,8 @@
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "uuid": "^11.0.3"
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
   }
 }
