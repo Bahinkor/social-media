@@ -385,8 +385,8 @@ exports.followRequestAccept = async (req, res, next) => {
     }
 
     await followModel.create({
-      follower: user._id,
-      following: pageID,
+      follower: pageID,
+      following: user._id,
     });
 
     res.status(201).json({
