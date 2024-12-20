@@ -44,6 +44,12 @@ exports.getPageInfo = async (req, res, next) => {
 
     const isOwn = user._id.equals(pageID);
 
+    const isSendFollowRequest = await requestModel.findOne({
+      from: user._id,
+      to: pageID,
+      status: "pending",
+    });
+
     if (!hasAccess) {
       return res.status(200).json({
         followed: Boolean(isFollowed),
@@ -52,6 +58,7 @@ exports.getPageInfo = async (req, res, next) => {
         posts: false,
         isOwn,
         hasAccess,
+        followRequest: !!isSendFollowRequest,
       });
     }
 
@@ -330,7 +337,7 @@ exports.followRequest = async (req, res, next) => {
 
     if (!page.private) {
       return res.status(422).json({
-        message: "this page is public. please send request \"follow\" api route.",
+        message: 'this page is public. please send request "follow" api route.',
       });
     }
 
