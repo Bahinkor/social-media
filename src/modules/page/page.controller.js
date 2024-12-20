@@ -286,7 +286,7 @@ exports.getFollowRequests = async (req, res, next) => {
         status: "pending",
       })
       .populate("to", "-password -__v -createdAt -updateAt")
-      .populate("from", "-password -__v -createdAt -updateAt")
+      .populate("from", "-password -__v -createdAt -updateAt -email")
       .lean();
 
     res.json(followRequests);
