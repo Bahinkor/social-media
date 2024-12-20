@@ -347,6 +347,106 @@
         }
       }
     },
+    "/request/get": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Get follow requests.",
+        "responses": {
+          "200": {
+            "description": "get follow request successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/request": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Send follow requests.",
+        "responses": {
+          "201": {
+            "description": "Send follow request successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/request/accept": {
+      "post": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Accept follow requests.",
+        "responses": {
+          "201": {
+            "description": "Accept follow request successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
+    "/{pageID}/request/reject": {
+      "delete": {
+        "tags": [
+          "Page"
+        ],
+        "summary": "Reject follow requests.",
+        "responses": {
+          "200": {
+            "description": "Reject follow request successfully."
+          },
+          "404": {
+            "description": "Page not found!"
+          },
+          "401": {
+            "description": "User is not auth."
+          },
+          "422": {
+            "description": "Page ID is not valid!"
+          },
+          "500": {
+            "description": "Internal server error!"
+          }
+        }
+      }
+    },
     "/post": {
       "post": {
         "tags": [

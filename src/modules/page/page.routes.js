@@ -14,11 +14,12 @@ pageRouter.route("/:pageID/follow").post(auth, pageController.follow);
 
 pageRouter.route("/:pageID/unfollow").delete(auth, pageController.unfollow);
 
+pageRouter.route("/request/get").get(auth, pageController.getFollowRequests);
+
 pageRouter.route("/:pageID/request").post(auth, pageController.followRequest);
 
 pageRouter
   .route("/:pageID/request/accept")
-  .get(auth, pageController.getFollowRequests)
   .post(auth, pageController.followRequestAccept);
 
 pageRouter
