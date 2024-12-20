@@ -32,7 +32,7 @@ exports.getPageInfo = async (req, res, next) => {
         {
           _id: pageID,
         },
-        "name username isVerified biography profilePicture",
+        "name username private biography profilePicture",
       )
       .lean();
 
