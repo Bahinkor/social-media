@@ -328,6 +328,12 @@ exports.followRequest = async (req, res, next) => {
       });
     }
 
+    if (!page.private) {
+      return res.status(422).json({
+        message: "this page is public. please send request \"follow\" api route.",
+      });
+    }
+
     await requestModel.create({
       from: user._id,
       to: pageID,
