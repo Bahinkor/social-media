@@ -135,7 +135,7 @@ exports.getFollowers = async (req, res, next) => {
       .find({
         following: pageID,
       })
-      .populate("follower", "name username profilePicture");
+      .populate("follower", "name username profilePicture private");
 
     followers = followers.map((item) => item.follower);
 
@@ -173,7 +173,7 @@ exports.getFollowings = async (req, res, next) => {
       .find({
         follower: pageID,
       })
-      .populate("following", "name username profilePicture");
+      .populate("following", "name username profilePicture private");
 
     followings = followings.map((item) => item.following);
 
