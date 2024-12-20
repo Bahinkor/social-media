@@ -295,6 +295,12 @@ exports.followRequest = async (req, res, next) => {
       });
     }
 
+    if (user._id.equals(pageID)) {
+      return res.status(422).json({
+        message: "You can't send a request to yourself.",
+      });
+    }
+
     const page = await userModel.findOne({
       _id: pageID,
     });
