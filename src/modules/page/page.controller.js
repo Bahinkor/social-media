@@ -218,6 +218,12 @@ exports.follow = async (req, res, next) => {
       });
     }
 
+    if (targetPage.private) {
+      return res.status(403).json({
+        message: "Your not access private pages! please send follow request.",
+      });
+    }
+
     await followModel.create({
       follower: user._id,
       following: pageID,
