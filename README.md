@@ -1,6 +1,6 @@
 # Social Media Backend
 
-A social media project with expressJs framework and mongoDB database and ejs template engine.
+A social media project with expressJs framework and mongoDB database.
 
 ## Getting Started
 
