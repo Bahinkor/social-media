@@ -72,3 +72,6 @@ The server will be running on port 8000 by default.
 ## Usage
 
 Once the server is running, you can access the application by navigating to `http://localhost:8000` in your web browser.
+
+## Client repo:
+[Social Media Project Client Repo](https://github.com/Bahinkor/social-media-client)
