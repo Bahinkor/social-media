@@ -1,6 +1,14 @@
 # Social Media Backend
 
-A social media project with expressJs framework and mongoDB database.
+A social media project built using the Express.js framework and MongoDB database, designed to function similarly to Instagram, allowing users to share posts, interact with others, and engage with various social features.
+
+- Authentication & Authorization: Secure user authentication using JWT (JSON Web Token).
+- Database Management: MongoDB with Mongoose for efficient data modeling.
+- File Uploads: Support for image and video uploads, likely using Multer or Cloud Storage.
+- API Security: Input validation using Joi, and rate limiting to prevent abuse.
+- RESTful API: Well-structured RESTful APIs for frontend integration.
+- API Documentation: API documentation using Swagger (Swagger UI & OpenAPI) for clear and interactive API reference.
+
 
 ## Getting Started
 
